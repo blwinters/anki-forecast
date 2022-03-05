@@ -21,35 +21,34 @@ export interface DayLearningInfo {
     new: number
   }
   reviews: {
+    learning: number
     max: number
   }
 }
-// learningReviews: number
 // youngReviews: number
 // matureReviews: number
 // youngCards: number
 // matureCards: number
 // totalActiveCards: number
 
-export type WeekdayNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7
-export const defaultLearnDays: WeekdayNumber[] = [1, 2, 3, 4, 5, 6, 7]
-export const defaultReviewDays: WeekdayNumber[] = [1, 2, 3, 4, 5, 6, 7]
+// 0 = Monday
+export type DayOfWeekIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+export const defaultLearnDays: DayOfWeekIndex[] = [0, 1, 2, 3, 4, 5, 6]
+export const defaultReviewDays: DayOfWeekIndex[] = [0, 1, 2, 3, 4, 5, 6]
+
+export type WeekConfig = DayConfig[]
+
+export const makeWeekConfigByRepeating = (dayConfig: DayConfig): WeekConfig => {
+  return Array.from({ length: 7 }, () => dayConfig)
+}
 
 export const defaultDayConfig: DayConfig = {
   newCards: 50,
   maxReviews: 500,
 }
 
-export type WeekConfig = DayConfig[]
-export const defaultWeekConfig: WeekConfig = [
-  defaultDayConfig,
-  defaultDayConfig,
-  defaultDayConfig,
-  defaultDayConfig,
-  defaultDayConfig,
-  defaultDayConfig,
-  defaultDayConfig,
-]
+export const defaultWeekConfig: WeekConfig = makeWeekConfigByRepeating(defaultDayConfig)
 
 export const defaultAnkiConfig: AnkiConfig = {
   baseLearningReviews: 2,

@@ -1,5 +1,11 @@
-import { defaultAnkiConfig, defaultWeekConfig, WeekConfig, DayConfig } from '../types'
-import { generateForecast } from '../generateForecast'
+import {
+  defaultAnkiConfig,
+  defaultWeekConfig,
+  WeekConfig,
+  DayConfig,
+  makeWeekConfigByRepeating,
+} from '../types'
+import { generateForecast, dayInfoReducer, DayInfoAccumulator } from '../generateForecast'
 
 describe('generateForecast', () => {
   it('returns array of LearningInfo matching forecastLength', () => {
@@ -34,6 +40,7 @@ describe('generateForecast', () => {
       })
 
       const actual: number[] = forecast.map(dayInfo => dayInfo.cards.new)
+      expect(actual.length).toEqual(forecastLength)
       expect(actual).toEqual(expected)
     })
 
@@ -57,7 +64,30 @@ describe('generateForecast', () => {
       })
 
       const actual: number[] = forecast.map(dayInfo => dayInfo.reviews.max)
+      expect(actual.length).toEqual(forecastLength)
       expect(actual).toEqual(expected)
+    })
+  })
+})
+
+describe('dayInfoReducer', () => {
+  describe('review counts', () => {
+    it('uses baseLearningReviews to calculate learning reviews per day', () => {
+      const weekConfig = makeWeekConfigByRepeating({ newCards: 30, maxReviews: 200 })
+      const ankiConfig = {
+        ...defaultAnkiConfig,
+        baseLearningReviews: 3,
+      }
+      const startingAcc: DayInfoAccumulator = {
+        dayInfoMap: new Map(),
+        ankiConfig,
+        weekConfig,
+      }
+
+      const expectedLearningReviews = 90
+      const { dayInfoMap } = dayInfoReducer(startingAcc, null, 0)
+      const actual = dayInfoMap.get(0)?.reviews.learning ?? 0
+      expect(actual).toEqual(expectedLearningReviews)
     })
   })
 })
