@@ -72,22 +72,29 @@ describe('generateForecast', () => {
 
 describe('dayInfoReducer', () => {
   describe('review counts', () => {
-    it('uses baseLearningReviews to calculate learning reviews per day', () => {
-      const weekConfig = makeWeekConfigByRepeating({ newCards: 30, maxReviews: 200 })
-      const ankiConfig = {
-        ...defaultAnkiConfig,
-        baseLearningReviews: 3,
-      }
-      const startingAcc: DayInfoAccumulator = {
-        dayInfoMap: new Map(),
-        ankiConfig,
-        weekConfig,
-      }
+    const weekConfig = makeWeekConfigByRepeating({ newCards: 30, maxReviews: 200 })
+    const ankiConfig = {
+      ...defaultAnkiConfig,
+      baseLearningReviews: 3,
+    }
+    const startingAcc: DayInfoAccumulator = {
+      dayInfoMap: new Map(),
+      ankiConfig,
+      weekConfig,
+    }
 
+    it('uses baseLearningReviews to calculate learning reviews per day', () => {
       const expectedLearningReviews = 90
       const { dayInfoMap } = dayInfoReducer(startingAcc, null, 0)
       const actual = dayInfoMap.get(0)?.reviews.learning ?? 0
       expect(actual).toEqual(expectedLearningReviews)
+    })
+
+    it('returns max reviews', () => {
+      const expectedMaxReviews = 200
+      const { dayInfoMap } = dayInfoReducer(startingAcc, null, 0)
+      const actual = dayInfoMap.get(0)?.reviews.max ?? 0
+      expect(actual).toEqual(expectedMaxReviews)
     })
   })
 })
