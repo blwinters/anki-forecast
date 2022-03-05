@@ -14,8 +14,12 @@ export const generateForecast = ({
   return Array.from({ length: forecastLength }, (_, i): DayLearningInfo => {
     const weekdayIndex = i % 7
     return {
-      newCards: weekConfig[weekdayIndex].newCards,
-      maxReviews: weekConfig[weekdayIndex].maxReviews,
+      cards: {
+        new: weekConfig[weekdayIndex].newCards,
+      },
+      reviews: {
+        max: weekConfig[weekdayIndex].maxReviews,
+      },
     }
   })
 }

@@ -33,7 +33,7 @@ describe('generateForecast', () => {
         forecastLength,
       })
 
-      const actual: number[] = forecast.map(dayInfo => dayInfo.newCards)
+      const actual: number[] = forecast.map(dayInfo => dayInfo.cards.new)
       expect(actual).toEqual(expected)
     })
 
@@ -56,7 +56,7 @@ describe('generateForecast', () => {
         forecastLength,
       })
 
-      const actual: number[] = forecast.map(dayInfo => dayInfo.maxReviews)
+      const actual: number[] = forecast.map(dayInfo => dayInfo.reviews.max)
       expect(actual).toEqual(expected)
     })
   })
