@@ -18,6 +18,7 @@ export interface DayConfig {
 
 export interface DayLearningInfo {
   newCards: number
+  maxReviews: number
 }
 // learningReviews: number
 // youngReviews: number

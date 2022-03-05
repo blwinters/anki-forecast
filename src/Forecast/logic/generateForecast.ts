@@ -15,6 +15,7 @@ export const generateForecast = ({
     const weekdayIndex = i % 7
     return {
       newCards: weekConfig[weekdayIndex].newCards,
+      maxReviews: weekConfig[weekdayIndex].maxReviews,
     }
   })
 }

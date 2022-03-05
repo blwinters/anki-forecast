@@ -14,7 +14,7 @@ describe('generateForecast', () => {
   })
 
   describe('weekConfig', () => {
-    it('observes new card count for each weekday', () => {
+    it('returns weekday-based newCards', () => {
       const forecastLength = 10
       const maxReviews = 500
       const newPerWeekday = [50, 50, 20, 50, 50, 0, 0]
@@ -34,6 +34,29 @@ describe('generateForecast', () => {
       })
 
       const actual: number[] = forecast.map(dayInfo => dayInfo.newCards)
+      expect(actual).toEqual(expected)
+    })
+
+    it('returns weekday-based maxReviews', () => {
+      const forecastLength = 10
+      const newPerWeekday = [50, 50, 20, 50, 50, 0, 0]
+      const maxReviewsPerWeekday = [500, 500, 200, 500, 500, 1000, 1000]
+      const weekConfig: WeekConfig = Array.from({ length: 7 }, (_, i): DayConfig => {
+        return {
+          newCards: newPerWeekday[i],
+          maxReviews: maxReviewsPerWeekday[i],
+        }
+      })
+
+      const expected = maxReviewsPerWeekday.concat([500, 500, 200])
+
+      const forecast = generateForecast({
+        ankiConfig: defaultAnkiConfig,
+        weekConfig,
+        forecastLength,
+      })
+
+      const actual: number[] = forecast.map(dayInfo => dayInfo.maxReviews)
       expect(actual).toEqual(expected)
     })
   })
