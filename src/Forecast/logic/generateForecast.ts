@@ -1,12 +1,10 @@
-import { AnkiConfig, WeekConfig, DayLearningInfo, DayConfig } from './types'
+import { AnkiConfig, WeekConfig, DayLearningInfo, DayConfig, DayInfoMap, CardMap } from './types'
 
 interface Props {
   ankiConfig: AnkiConfig
   weekConfig: WeekConfig
   forecastLength: number
 }
-
-type DayInfoMap = Map<number, DayLearningInfo>
 
 export const generateForecast = ({
   ankiConfig,
@@ -16,7 +14,8 @@ export const generateForecast = ({
   const arrayOfLength = Array.from({ length: forecastLength }, () => null)
 
   const dayInfoMap: DayInfoMap = arrayOfLength.reduce(dayInfoReducer, {
-    dayInfoMap: new Map<number, DayLearningInfo>(),
+    dayInfoMap: new Map(),
+    cardMap: new Map(),
     ankiConfig,
     weekConfig,
   }).dayInfoMap
@@ -27,6 +26,7 @@ export const generateForecast = ({
 
 export type DayInfoAccumulator = {
   dayInfoMap: DayInfoMap
+  cardMap: CardMap
   ankiConfig: AnkiConfig
   weekConfig: WeekConfig
 }
@@ -43,9 +43,14 @@ export const dayInfoReducer: DayInfoReducer = (acc, _, dayIndex) => {
   const dayInfo: DayLearningInfo = {
     cards: {
       new: newCards,
+      young: 0,
+      mature: 0,
+      totalActive: 0,
     },
     reviews: {
       learning: learningReviewCount,
+      young: 0,
+      mature: 0,
       max: dayOfWeekConfig.maxReviews,
     },
   }
@@ -57,9 +62,14 @@ export const dayInfoReducer: DayInfoReducer = (acc, _, dayIndex) => {
 const emptyDayInfo: DayLearningInfo = {
   cards: {
     new: 0,
+    young: 0,
+    mature: 0,
+    totalActive: 0,
   },
   reviews: {
     learning: 0,
+    young: 0,
+    mature: 0,
     max: 0,
   },
 }

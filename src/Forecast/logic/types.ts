@@ -19,17 +19,25 @@ export interface DayConfig {
 export interface DayLearningInfo {
   cards: {
     new: number
+    young: number
+    mature: number
+    totalActive: number
   }
   reviews: {
     learning: number
+    young: number
+    mature: number
     max: number
   }
 }
-// youngReviews: number
-// matureReviews: number
-// youngCards: number
-// matureCards: number
-// totalActiveCards: number
+
+export type DayInfoMap = Map<number, DayLearningInfo>
+export type CardMap = Map<number, CardInfo>
+
+export interface CardInfo {
+  dueIndex: number
+  latestInterval: number
+}
 
 // 0 = Monday
 export type DayOfWeekIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6

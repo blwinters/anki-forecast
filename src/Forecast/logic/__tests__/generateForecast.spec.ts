@@ -79,6 +79,7 @@ describe('dayInfoReducer', () => {
     }
     const startingAcc: DayInfoAccumulator = {
       dayInfoMap: new Map(),
+      cardMap: new Map(),
       ankiConfig,
       weekConfig,
     }
