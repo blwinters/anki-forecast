@@ -5,11 +5,14 @@ import type {
   DayConfig,
   WeekConfig,
   DayLearningSummary,
+  CardInfo,
 } from './types'
 import { getDayCards } from './getDayCards'
+import { makeNewCardArray } from './forecastHelpers'
 
 export type DaySummaryAccumulator = {
   summariesByDay: DaySummaryMap
+  newCardsRemaining: CardInfo[]
   cardsByDay: DayCardsMap
   ankiConfig: AnkiConfig
   weekConfig: WeekConfig
@@ -33,8 +36,8 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
     dayIndex,
     dayConfig,
     cardsByDay,
-    newCardsRemaining: previousDaySummary.endingCards.newRemaining,
-  })
+    newCardsRemaining: acc.newCardsRemaining,
+  }).counts()
 
   const daySummary: DayLearningSummary = {
     reviews: {
@@ -68,6 +71,7 @@ export const daySummaryReducerDefaultValue = (
 
   return {
     summariesByDay: initialSummaries,
+    newCardsRemaining: makeNewCardArray(startingSummary.endingCards.newRemaining),
     cardsByDay: new Map(),
     ankiConfig,
     weekConfig,

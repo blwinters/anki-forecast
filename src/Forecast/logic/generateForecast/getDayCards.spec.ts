@@ -1,6 +1,6 @@
-import { ReviewCountProps, getDayCards, ReviewCounts } from './getDayCards'
-import { CardInfo, CardStatus, DayCardsMap, DayConfig } from './types'
-import { matureCardThreshold } from './forecastHelpers'
+import { ReviewCountProps, getDayCards, DayCardCounts } from './getDayCards'
+import { CardStatus, DayCardsMap, DayConfig } from './types'
+import { makeCardArray, makeNewCardArray } from './forecastHelpers'
 
 describe('getReviewCounts', () => {
   const defaultDayConfig: DayConfig = { newCards: 30, maxReviews: 200 }
@@ -8,7 +8,7 @@ describe('getReviewCounts', () => {
     dayIndex: 0,
     dayConfig: defaultDayConfig,
     cardsByDay: new Map(),
-    newCardsRemaining: 500,
+    newCardsRemaining: makeNewCardArray(500),
   }
 
   describe('card statuses', () => {
@@ -17,8 +17,8 @@ describe('getReviewCounts', () => {
         const newCardsRemaining = 12
         const actual = getDayCards({
           ...defaultCountProps,
-          newCardsRemaining,
-        })
+          newCardsRemaining: makeNewCardArray(newCardsRemaining),
+        }).counts()
         expect(actual.newCards).toEqual(newCardsRemaining)
       })
 
@@ -30,7 +30,7 @@ describe('getReviewCounts', () => {
             newCards: dayNewCards,
             maxReviews: 200,
           },
-        })
+        }).counts()
         expect(actual.newCards).toEqual(dayNewCards)
       })
     })
@@ -45,7 +45,7 @@ describe('getReviewCounts', () => {
         const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
-        })
+        }).counts()
 
         expect(actual.learning).toEqual(learningCount)
       })
@@ -59,7 +59,7 @@ describe('getReviewCounts', () => {
         const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
-        })
+        }).counts()
 
         expect(actual.young).toEqual(youngCount)
       })
@@ -73,7 +73,7 @@ describe('getReviewCounts', () => {
         const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
-        })
+        }).counts()
 
         expect(actual.mature).toEqual(matureCount)
       })
@@ -93,9 +93,9 @@ describe('getReviewCounts', () => {
             maxReviews: 500,
             newCards: 35,
           },
-        })
+        }).counts()
 
-        const expected: ReviewCounts = {
+        const expected: DayCardCounts = {
           newCards: 35,
           learning: 15,
           young: 20,
@@ -121,8 +121,8 @@ describe('getReviewCounts', () => {
           newCards: 30,
         },
         cardsByDay,
-        newCardsRemaining: 500,
-      })
+        newCardsRemaining: makeNewCardArray(500),
+      }).counts()
       expect(actual.total).toEqual(expectedMaxReviews)
     })
   })
@@ -140,24 +140,3 @@ describe('getReviewCounts', () => {
     })
   })
 })
-
-const makeCardArray = (status: CardStatus, count: number): CardInfo[] => {
-  const baseArray = Array.from({ length: count }, () => null)
-  return baseArray.map((_, index) => ({
-    id: index,
-    latestInterval: intervalForIndex(index, status),
-  }))
-}
-
-const intervalForIndex = (index: number, status: CardStatus): number => {
-  switch (status) {
-    case CardStatus.learning:
-      return 1 / (index + 2)
-    case CardStatus.young:
-      return 1 + index
-    case CardStatus.mature:
-      return matureCardThreshold + (index % 2) // interval >= threshold
-    default:
-      return 0
-  }
-}

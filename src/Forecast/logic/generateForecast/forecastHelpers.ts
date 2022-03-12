@@ -1,4 +1,5 @@
-import type { DayLearningSummary, DayConfig, WeekConfig, AnkiConfig } from './types'
+import type { DayLearningSummary, DayConfig, WeekConfig, AnkiConfig, CardInfo } from './types'
+import { CardStatus } from './types'
 
 export const makeWeekConfigByRepeating = (dayConfig: DayConfig): WeekConfig => {
   return Array.from({ length: 7 }, () => dayConfig)
@@ -43,3 +44,29 @@ export const defaultStartingSummary = (deckSize: number): DayLearningSummary => 
     newRemaining: deckSize,
   },
 })
+
+export const makeNewCardArray = (length: number) => {
+  return makeCardArray(CardStatus.new, length)
+}
+
+export const makeCardArray = (status: CardStatus, length: number): CardInfo[] => {
+  const baseArray = Array.from({ length: length }, () => null)
+  return baseArray.map((_, index) => ({
+    id: index,
+    latestInterval: intervalForIndex(index, status),
+  }))
+}
+
+const intervalForIndex = (index: number, status: CardStatus): number => {
+  switch (status) {
+    case CardStatus.learning:
+      return 1 / (index + 2)
+    case CardStatus.young:
+      return 1 + index
+    case CardStatus.mature:
+      return matureCardThreshold + (index % 2) // interval >= threshold
+    case CardStatus.new:
+    default:
+      return 0
+  }
+}

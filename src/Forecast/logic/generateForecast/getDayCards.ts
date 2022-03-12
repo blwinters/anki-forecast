@@ -1,15 +1,8 @@
-import type { DayConfig, DayCardsMap } from './types'
+import type { DayConfig, DayCardsMap, CardInfo } from './types'
 import { CardStatus } from './types'
 import { matureCardThreshold } from './forecastHelpers'
 
-export interface ReviewCountProps {
-  dayIndex: number
-  dayConfig: DayConfig
-  cardsByDay: DayCardsMap
-  newCardsRemaining: number
-}
-
-export interface ReviewCounts {
+export interface DayCardCounts {
   newCards: number
   learning: number
   young: number
@@ -17,93 +10,115 @@ export interface ReviewCounts {
   total: number
 }
 
-export const getDayCards = (cardCountProps: ReviewCountProps): ReviewCounts => {
+interface DayCardArrays {
+  newCards: CardInfo[]
+  learning: CardInfo[]
+  young: CardInfo[]
+  mature: CardInfo[]
+}
+
+export class DayCards {
+  private readonly cardArrays: DayCardArrays
+
+  constructor(cardArrays: DayCardArrays) {
+    this.cardArrays = cardArrays
+  }
+
+  getCardArrays(): DayCardArrays {
+    return this.cardArrays
+  }
+
+  counts(): DayCardCounts {
+    const { newCards, learning, young, mature } = this.cardArrays
+    return {
+      newCards: newCards.length,
+      learning: learning.length,
+      young: young.length,
+      mature: mature.length,
+      total: newCards.length + learning.length + young.length + mature.length,
+    }
+  }
+}
+
+export interface ReviewCountProps {
+  dayIndex: number
+  dayConfig: DayConfig
+  cardsByDay: DayCardsMap
+  newCardsRemaining: CardInfo[]
+}
+
+export const getDayCards = (cardCountProps: ReviewCountProps): DayCards => {
   const newCards = startingReviewsForStatus(CardStatus.new, cardCountProps)
   const learning = startingReviewsForStatus(CardStatus.learning, cardCountProps)
   const young = startingReviewsForStatus(CardStatus.young, cardCountProps)
   const mature = startingReviewsForStatus(CardStatus.mature, cardCountProps)
-  return countsRespectingMaxReviews(
+  const revisedCardArrays: DayCardArrays = cardsRespectingMaxReviews(
     {
       newCards,
       learning,
       young,
       mature,
-      total: newCards + learning + young + mature,
     },
     cardCountProps.dayConfig.maxReviews
   )
+
+  return new DayCards(revisedCardArrays)
 }
 
 const startingReviewsForStatus = (
   status: CardStatus,
   { dayIndex, dayConfig, cardsByDay, newCardsRemaining }: ReviewCountProps
-): number => {
+): CardInfo[] => {
   const dueCards = cardsByDay.get(dayIndex) ?? []
 
   switch (status) {
     case CardStatus.new:
-      return Math.min(dayConfig.newCards, newCardsRemaining)
+      return newCardsRemaining.slice(0, dayConfig.newCards)
     case CardStatus.learning:
-      const learningCards = dueCards.filter(card => {
+      return dueCards.filter(card => {
         return card.latestInterval > 0 && card.latestInterval < 1
       })
-      return learningCards.length
     case CardStatus.young:
-      const youngCards = dueCards.filter(card => {
+      return dueCards.filter(card => {
         return card.latestInterval >= 1 && card.latestInterval < matureCardThreshold
       })
-      return youngCards.length
     case CardStatus.mature:
-      const matureCards = dueCards.filter(card => {
+      return dueCards.filter(card => {
         return card.latestInterval >= matureCardThreshold
       })
-      return matureCards.length
     default:
-      return 0
+      return []
   }
 }
 
-const countsRespectingMaxReviews = (rawCounts: ReviewCounts, maxReviews: number): ReviewCounts => {
-  const { newCards, learning, young, mature, total } = rawCounts
+const cardsRespectingMaxReviews = (
+  originalCards: DayCardArrays,
+  maxReviews: number
+): DayCardArrays => {
+  const { newCards, learning, young, mature } = originalCards
 
-  let revised: ReviewCounts = {
-    newCards: 0,
-    learning: 0,
-    young: 0,
-    mature: 0,
-    total: 0,
+  let revised: DayCardArrays = {
+    newCards: [],
+    learning: [],
+    young: [],
+    mature: [],
   }
 
-  const checkTotal = () => {
-    const currentTotal = revised.newCards + revised.learning + revised.young + revised.mature
-    return {
-      total: currentTotal,
-      spaceAvailable: maxReviews - currentTotal,
-    }
+  const sliceFittingAvailableSpace = (cards: CardInfo[]): CardInfo[] => {
+    const currentTotal =
+      revised.newCards.length +
+      revised.learning.length +
+      revised.young.length +
+      revised.mature.length
+
+    const availableSpace = maxReviews - currentTotal
+    return cards.slice(0, availableSpace)
   }
 
-  if (newCards > 0) {
-    const { spaceAvailable } = checkTotal()
-    revised.newCards = Math.min(newCards, spaceAvailable)
-  }
-
-  if (learning > 0) {
-    const { spaceAvailable } = checkTotal()
-    revised.learning = Math.min(learning, spaceAvailable)
-  }
-
-  if (young > 0) {
-    const { spaceAvailable } = checkTotal()
-    revised.young = Math.min(young, spaceAvailable)
-  }
-
-  if (mature > 0) {
-    const { spaceAvailable } = checkTotal()
-    revised.mature = Math.min(mature, spaceAvailable)
-  }
-
-  const { total: finalTotal } = checkTotal()
-  revised.total = finalTotal
+  revised.newCards = sliceFittingAvailableSpace(newCards)
+  revised.learning = sliceFittingAvailableSpace(learning)
+  revised.young = sliceFittingAvailableSpace(young)
+  revised.mature = sliceFittingAvailableSpace(mature)
 
   return revised
 }
