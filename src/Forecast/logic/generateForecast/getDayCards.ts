@@ -17,7 +17,7 @@ export interface ReviewCounts {
   total: number
 }
 
-export const getReviewCounts = (cardCountProps: ReviewCountProps): ReviewCounts => {
+export const getDayCards = (cardCountProps: ReviewCountProps): ReviewCounts => {
   const newCards = startingReviewsForStatus(CardStatus.new, cardCountProps)
   const learning = startingReviewsForStatus(CardStatus.learning, cardCountProps)
   const young = startingReviewsForStatus(CardStatus.young, cardCountProps)

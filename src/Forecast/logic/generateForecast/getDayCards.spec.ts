@@ -1,4 +1,4 @@
-import { ReviewCountProps, getReviewCounts, ReviewCounts } from './getReviewCounts'
+import { ReviewCountProps, getDayCards, ReviewCounts } from './getDayCards'
 import { CardInfo, CardStatus, DayCardsMap, DayConfig } from './types'
 import { matureCardThreshold } from './forecastHelpers'
 
@@ -15,7 +15,7 @@ describe('getReviewCounts', () => {
     describe('new cards', () => {
       it('limits new cards by total new cards remaining', () => {
         const newCardsRemaining = 12
-        const actual = getReviewCounts({
+        const actual = getDayCards({
           ...defaultCountProps,
           newCardsRemaining,
         })
@@ -24,7 +24,7 @@ describe('getReviewCounts', () => {
 
       it('limits new cards by day config', () => {
         const dayNewCards = 25
-        const actual = getReviewCounts({
+        const actual = getDayCards({
           ...defaultCountProps,
           dayConfig: {
             newCards: dayNewCards,
@@ -42,7 +42,7 @@ describe('getReviewCounts', () => {
         const dayLearningCards = makeCardArray(CardStatus.learning, learningCount)
         cardsByDay.set(0, dayLearningCards)
 
-        const actual = getReviewCounts({
+        const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
         })
@@ -56,7 +56,7 @@ describe('getReviewCounts', () => {
         const dayYoungCards = makeCardArray(CardStatus.young, youngCount)
         cardsByDay.set(0, dayYoungCards)
 
-        const actual = getReviewCounts({
+        const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
         })
@@ -70,7 +70,7 @@ describe('getReviewCounts', () => {
         const dayMatureCards = makeCardArray(CardStatus.mature, matureCount)
         cardsByDay.set(0, dayMatureCards)
 
-        const actual = getReviewCounts({
+        const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
         })
@@ -86,7 +86,7 @@ describe('getReviewCounts', () => {
         const allReviewCards = learningCards.concat(youngCards).concat(matureCards)
         cardsByDay.set(0, allReviewCards)
 
-        const actual = getReviewCounts({
+        const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
           dayConfig: {
@@ -114,7 +114,7 @@ describe('getReviewCounts', () => {
       const cardsByDay: DayCardsMap = new Map()
       const matureCards = makeCardArray(CardStatus.mature, expectedMaxReviews + 5)
       cardsByDay.set(0, matureCards)
-      const actual = getReviewCounts({
+      const actual = getDayCards({
         dayIndex: 0,
         dayConfig: {
           maxReviews: expectedMaxReviews,

@@ -6,7 +6,7 @@ import type {
   WeekConfig,
   DayLearningSummary,
 } from './types'
-import { getReviewCounts } from './getReviewCounts'
+import { getDayCards } from './getDayCards'
 
 export type DaySummaryAccumulator = {
   summariesByDay: DaySummaryMap
@@ -29,7 +29,7 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
 
   const previousDaySummary = summariesByDay.get(dayIndex - 1)! //startingSummary is -1
 
-  const { newCards, learning, young, mature, total } = getReviewCounts({
+  const { newCards, learning, young, mature, total } = getDayCards({
     dayIndex,
     dayConfig,
     cardsByDay,
