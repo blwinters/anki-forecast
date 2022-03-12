@@ -17,18 +17,20 @@ export interface DayConfig {
 }
 
 export interface DayLearningSummary {
-  endingCards: {
-    new: number
-    young: number
-    mature: number
-    totalActive: number
-  }
   reviews: {
     new: number
     learning: number
     young: number
     mature: number
+    total: number
     max: number
+  }
+  endingCards: {
+    learning: number
+    young: number
+    mature: number
+    totalActive: number
+    newRemaining: number
   }
 }
 

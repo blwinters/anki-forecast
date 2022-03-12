@@ -29,30 +29,28 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
 
   const previousDaySummary = summariesByDay.get(dayIndex - 1)! //startingSummary is -1
 
-  const { newReviews, learningReviews, youngReviews, matureReviews } = getReviewCounts({
+  const { newCards, learning, young, mature, total } = getReviewCounts({
     dayIndex,
     dayConfig,
     cardsByDay,
-    newCardsRemaining: previousDaySummary.endingCards.new,
+    newCardsRemaining: previousDaySummary.endingCards.newRemaining,
   })
 
-  //TODO: handle existing learning cards, accounting for
-  //latest interval and learning graduation threshold
-  const learningReviewCount = newReviews * ankiConfig.baseLearningReviews + learningReviews
-
   const daySummary: DayLearningSummary = {
+    reviews: {
+      new: newCards,
+      learning,
+      young,
+      mature,
+      total,
+      max: dayConfig.maxReviews,
+    },
     endingCards: {
-      new: previousDaySummary.endingCards.new - newReviews,
+      learning: 0,
       young: 0,
       mature: 0,
       totalActive: 0,
-    },
-    reviews: {
-      new: newReviews,
-      learning: learningReviewCount,
-      young: youngReviews,
-      mature: matureReviews,
-      max: dayConfig.maxReviews,
+      newRemaining: previousDaySummary.endingCards.newRemaining - newCards,
     },
   }
 
@@ -77,17 +75,19 @@ export const daySummaryReducerDefaultValue = (
 }
 
 export const emptyDaySummary: DayLearningSummary = {
-  endingCards: {
-    new: 0,
-    young: 0,
-    mature: 0,
-    totalActive: 0,
-  },
   reviews: {
     new: 0,
     learning: 0,
     young: 0,
     mature: 0,
+    total: 0,
     max: 0,
+  },
+  endingCards: {
+    learning: 0,
+    young: 0,
+    mature: 0,
+    totalActive: 0,
+    newRemaining: 0,
   },
 }

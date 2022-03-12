@@ -31,19 +31,3 @@ export const generateForecast = ({
   const dayIndices = Array.from(summariesByDay.keys()).sort()
   return dayIndices.map(dayIndex => summariesByDay.get(dayIndex) ?? emptyDaySummary)
 }
-
-export const defaultStartingSummary = (deckSize: number): DayLearningSummary => ({
-  endingCards: {
-    new: deckSize,
-    young: 0,
-    mature: 0,
-    totalActive: 0,
-  },
-  reviews: {
-    new: 0,
-    learning: 0,
-    young: 0,
-    mature: 0,
-    max: 0,
-  },
-})

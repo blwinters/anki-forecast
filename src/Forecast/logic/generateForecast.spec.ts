@@ -1,15 +1,10 @@
-import type { WeekConfig, DayConfig, CardInfo } from './generateForecast/types'
+import type { WeekConfig, DayConfig } from './generateForecast/types'
 import {
   defaultAnkiConfig,
   defaultWeekConfig,
-  makeWeekConfigByRepeating,
+  defaultStartingSummary,
 } from './generateForecast/forecastHelpers'
-import { generateForecast, defaultStartingSummary } from './generateForecast'
-import {
-  daySummaryReducer,
-  daySummaryReducerDefaultValue,
-  DaySummaryAccumulator,
-} from './generateForecast/daySummaryReducer'
+import { generateForecast } from './generateForecast'
 
 describe('generateForecast', () => {
   it('returns array matching forecastLength', () => {
@@ -76,71 +71,3 @@ describe('generateForecast', () => {
     })
   })
 })
-
-describe('daySummaryReducer', () => {
-  describe('review counts', () => {
-    const weekConfig = makeWeekConfigByRepeating({ newCards: 30, maxReviews: 200 })
-    const ankiConfig = {
-      ...defaultAnkiConfig,
-      baseLearningReviews: 3,
-    }
-    let startingAcc: DaySummaryAccumulator
-
-    beforeEach(() => {
-      const startingSummary = defaultStartingSummary(500)
-      startingAcc = daySummaryReducerDefaultValue(startingSummary, ankiConfig, weekConfig)
-    })
-
-    it('limits new cards by total new cards remaining', () => {
-      //
-    })
-
-    it('uses baseLearningReviews to calculate learning reviews per day', () => {
-      const expectedLearningReviews = 90
-      const { summariesByDay } = daySummaryReducer(startingAcc, null, 0)
-      const actual = summariesByDay.get(0)?.reviews.learning ?? 0
-      expect(actual).toEqual(expectedLearningReviews)
-    })
-
-    describe('max reviews', () => {
-      it('returns max reviews', () => {
-        const expectedMaxReviews = 200
-        const { summariesByDay } = daySummaryReducer(startingAcc, null, 0)
-        const actual = summariesByDay.get(0)?.reviews.max ?? 0
-        expect(actual).toEqual(expectedMaxReviews)
-      })
-
-      it('limits total reviews', () => {
-        const expectedMaxReviews = 200
-
-        const emptyArray = Array.from({ length: 201 }, () => null)
-        const dayCards: CardInfo[] = emptyArray.map((_, i) => ({
-          id: i,
-          latestInterval: intervalForBucket(i % 3),
-        }))
-
-        startingAcc.cardsByDay.set(0, dayCards)
-
-        const { summariesByDay } = daySummaryReducer(startingAcc, null, 0)
-        const reviews = summariesByDay.get(0)?.reviews
-        if (!reviews) {
-          fail('reviewInfo should be defined')
-        }
-        const actualTotalReviews = reviews.new + reviews.learning + reviews.young + reviews.mature
-        expect(actualTotalReviews).toEqual(expectedMaxReviews)
-      })
-    })
-  })
-})
-
-const intervalForBucket = (bucket: number): number => {
-  switch (bucket) {
-    case 0:
-      return 0
-    case 1:
-      return 1
-    case 2:
-    default:
-      return 21
-  }
-}
