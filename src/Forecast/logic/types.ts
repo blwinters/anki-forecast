@@ -52,21 +52,23 @@ export const makeWeekConfigByRepeating = (dayConfig: DayConfig): WeekConfig => {
 }
 
 export const defaultDayConfig: DayConfig = {
-  newCards: 50,
-  maxReviews: 500,
+  newCards: 20,
+  maxReviews: 200,
 }
 
 export const defaultWeekConfig: WeekConfig = makeWeekConfigByRepeating(defaultDayConfig)
 
+export const matureCardThreshold = 21
+
 export const defaultAnkiConfig: AnkiConfig = {
-  baseLearningReviews: 2,
   learningAccuracy: 0.5,
   reviewAccuracy: 0.9,
+  baseLearningReviews: 2, //learning steps
   graduatingInterval: 1,
-  maxInterval: 15,
-  againMultiplier: 0,
-  goodMultiplier: 2.5,
-  hardMultiplier: 1.2,
+  maxInterval: 180, //default is 36,500
+  againMultiplier: 0, //new interval
+  goodMultiplier: 2.5, //starting ease
+  hardMultiplier: 1.2, //hard interval
   easyBonus: 1.3,
-  intervalModifier: 0.01,
+  intervalModifier: 1.0,
 }
