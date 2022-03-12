@@ -1,12 +1,15 @@
-import type { WeekConfig, DayConfig, CardInfo } from '../types'
-import { defaultAnkiConfig, defaultWeekConfig, makeWeekConfigByRepeating } from '../forecastHelpers'
+import type { WeekConfig, DayConfig, CardInfo } from './generateForecast/types'
 import {
-  generateForecast,
+  defaultAnkiConfig,
+  defaultWeekConfig,
+  makeWeekConfigByRepeating,
+} from './generateForecast/forecastHelpers'
+import { generateForecast, defaultStartingSummary } from './generateForecast'
+import {
   daySummaryReducer,
-  DaySummaryAccumulator,
-  defaultStartingSummary,
   daySummaryReducerDefaultValue,
-} from '../generateForecast'
+  DaySummaryAccumulator,
+} from './generateForecast/daySummaryReducer'
 
 describe('generateForecast', () => {
   it('returns array matching forecastLength', () => {
@@ -107,6 +110,37 @@ describe('daySummaryReducer', () => {
         expect(actual).toEqual(expectedMaxReviews)
       })
 
+      it('limits total reviews', () => {
+        const expectedMaxReviews = 200
+
+        const emptyArray = Array.from({ length: 201 }, () => null)
+        const dayCards: CardInfo[] = emptyArray.map((_, i) => ({
+          id: i,
+          latestInterval: intervalForBucket(i % 3),
+        }))
+
+        startingAcc.cardsByDay.set(0, dayCards)
+
+        const { summariesByDay } = daySummaryReducer(startingAcc, null, 0)
+        const reviews = summariesByDay.get(0)?.reviews
+        if (!reviews) {
+          fail('reviewInfo should be defined')
+        }
+        const actualTotalReviews = reviews.new + reviews.learning + reviews.young + reviews.mature
+        expect(actualTotalReviews).toEqual(expectedMaxReviews)
+      })
     })
   })
 })
+
+const intervalForBucket = (bucket: number): number => {
+  switch (bucket) {
+    case 0:
+      return 0
+    case 1:
+      return 1
+    case 2:
+    default:
+      return 21
+  }
+}
