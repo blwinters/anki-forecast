@@ -16,19 +16,10 @@ module.exports = {
       version: 'detect',
     },
   },
-  plugins: [
-    '@typescript-eslint',
-    'jest',
-    'prettier',
-    'react',
-    'react-hooks',
-    'react-native',
-    'neverthrow',
-  ],
+  plugins: ['@typescript-eslint', 'jest', 'prettier', 'react', 'react-hooks'],
   extends: [
     'eslint:recommended',
     'react-app',
-    'react-app/jest',
     'plugin:jest/recommended',
     'plugin:jest/style',
     'plugin:react/recommended',
@@ -40,7 +31,6 @@ module.exports = {
   rules: {
     eqeqeq: 'error',
     'max-lines': 'error',
-    'neverthrow/must-use-result': 'error',
     'prettier/prettier': 'error',
   },
   overrides: [
