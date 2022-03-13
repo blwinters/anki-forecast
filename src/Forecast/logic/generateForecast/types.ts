@@ -33,6 +33,13 @@ export interface DaySummaryEndCounts {
   newRemaining: number
 }
 
+export interface CardStatusDiff {
+  new: number
+  learning: number
+  young: number
+  mature: number
+}
+
 export interface DayLearningSummary {
   reviews: DaySummaryReviews
   endCounts: DaySummaryEndCounts
