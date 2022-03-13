@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { Button } from '@mui/material'
 import Chart from './ui/Chart'
 import { DayLearningSummary } from './logic/generateForecast/types'
@@ -10,17 +10,24 @@ import {
 } from './logic/generateForecast/forecastHelpers'
 
 const Forecast = () => {
-  const data: DayLearningSummary[] = generateForecast({
-    startingSummary: defaultStartingSummary({ deckSize: 2000 }),
-    forecastLength: 60,
-    ankiConfig: defaultAnkiConfig,
-    weekConfig: defaultWeekConfig,
-  })
+  const [data, setData] = useState<DayLearningSummary[]>([])
+
+  const onUpdate = useCallback(() => {
+    const forecast = generateForecast({
+      startingSummary: defaultStartingSummary({ deckSize: 2000 }),
+      forecastLength: 60,
+      ankiConfig: defaultAnkiConfig,
+      weekConfig: defaultWeekConfig,
+    })
+    setData(forecast)
+  }, [])
 
   return (
     <>
       <Chart data={data} />
-      <Button variant="contained">Update</Button>
+      <Button variant="contained" onClick={onUpdate}>
+        Update
+      </Button>
     </>
   )
 }
