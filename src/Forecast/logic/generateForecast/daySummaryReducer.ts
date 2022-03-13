@@ -30,30 +30,27 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
   const weekdayIndex = dayIndex % 7
   const dayConfig: DayConfig = weekConfig[weekdayIndex]
 
-  const previousDaySummary = summariesByDay.get(dayIndex - 1)! //startingSummary is -1
-
-  const { newCards, learning, young, mature, total } = getDayCards({
+  const dayCards = getDayCards({
     dayIndex,
     dayConfig,
     cardsByDay,
     newCardsRemaining: acc.newCardsRemaining,
-  }).counts()
+  })
+
+  const daySummaryReviews = dayCards.getDaySummaryReviews(dayConfig.maxReviews)
+
+  const previousDaySummary = summariesByDay.get(dayIndex - 1)! //startingSummary is -1
+  const previousNewRemaining = previousDaySummary.endingCards.newRemaining
+  const currentNewRemaining = previousNewRemaining - daySummaryReviews.new
 
   const daySummary: DayLearningSummary = {
-    reviews: {
-      new: newCards,
-      learning,
-      young,
-      mature,
-      total,
-      max: dayConfig.maxReviews,
-    },
+    reviews: daySummaryReviews,
     endingCards: {
       learning: 0,
       young: 0,
       mature: 0,
       totalActive: 0,
-      newRemaining: previousDaySummary.endingCards.newRemaining - newCards,
+      newRemaining: currentNewRemaining,
     },
   }
 

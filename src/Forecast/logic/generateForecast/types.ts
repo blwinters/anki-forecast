@@ -16,22 +16,26 @@ export interface DayConfig {
   maxReviews: number
 }
 
+export interface DaySummaryReviews {
+  new: number
+  learning: number
+  young: number
+  mature: number
+  total: number
+  max: number
+}
+
+export interface DaySummaryEndingCards {
+  learning: number
+  young: number
+  mature: number
+  totalActive: number
+  newRemaining: number
+}
+
 export interface DayLearningSummary {
-  reviews: {
-    new: number
-    learning: number
-    young: number
-    mature: number
-    total: number
-    max: number
-  }
-  endingCards: {
-    learning: number
-    young: number
-    mature: number
-    totalActive: number
-    newRemaining: number
-  }
+  reviews: DaySummaryReviews
+  endingCards: DaySummaryEndingCards
 }
 
 export enum CardStatus {

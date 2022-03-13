@@ -1,4 +1,5 @@
-import { ReviewCountProps, getDayCards, DayCardCounts } from './getDayCards'
+import { ReviewCountProps, getDayCards } from './getDayCards'
+import { DayCardCounts } from './DayCards'
 import { CardStatus, DayCardsMap, DayConfig } from './types'
 import { makeCardArray, makeNewCardArray } from './forecastHelpers'
 
@@ -18,7 +19,7 @@ describe('getReviewCounts', () => {
         const actual = getDayCards({
           ...defaultCountProps,
           newCardsRemaining: makeNewCardArray(newCardsRemaining),
-        }).counts()
+        }).toCounts()
         expect(actual.newCards).toEqual(newCardsRemaining)
       })
 
@@ -30,7 +31,7 @@ describe('getReviewCounts', () => {
             newCards: dayNewCards,
             maxReviews: 200,
           },
-        }).counts()
+        }).toCounts()
         expect(actual.newCards).toEqual(dayNewCards)
       })
     })
@@ -45,7 +46,7 @@ describe('getReviewCounts', () => {
         const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
-        }).counts()
+        }).toCounts()
 
         expect(actual.learning).toEqual(learningCount)
       })
@@ -59,7 +60,7 @@ describe('getReviewCounts', () => {
         const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
-        }).counts()
+        }).toCounts()
 
         expect(actual.young).toEqual(youngCount)
       })
@@ -73,7 +74,7 @@ describe('getReviewCounts', () => {
         const actual = getDayCards({
           ...defaultCountProps,
           cardsByDay,
-        }).counts()
+        }).toCounts()
 
         expect(actual.mature).toEqual(matureCount)
       })
@@ -93,7 +94,7 @@ describe('getReviewCounts', () => {
             maxReviews: 500,
             newCards: 35,
           },
-        }).counts()
+        }).toCounts()
 
         const expected: DayCardCounts = {
           newCards: 35,
@@ -122,7 +123,7 @@ describe('getReviewCounts', () => {
         },
         cardsByDay,
         newCardsRemaining: makeNewCardArray(500),
-      }).counts()
+      }).toCounts()
       expect(actual.total).toEqual(expectedMaxReviews)
     })
   })

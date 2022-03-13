@@ -18,9 +18,8 @@ export const generateForecast = ({
   ankiConfig,
   weekConfig,
 }: Props): DayLearningSummary[] => {
-  const arrayOfLength = Array.from({ length: forecastLength }, () => null)
-
   const reducerDefaultValue = daySummaryReducerDefaultValue(startingSummary, ankiConfig, weekConfig)
+  const arrayOfLength = Array.from({ length: forecastLength }, () => null)
   const summariesByDay: DaySummaryMap = arrayOfLength.reduce(
     daySummaryReducer,
     reducerDefaultValue
