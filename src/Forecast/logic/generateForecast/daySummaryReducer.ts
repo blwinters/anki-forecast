@@ -40,12 +40,12 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
   const daySummaryReviews = dayCards.getDaySummaryReviews(dayConfig.maxReviews)
 
   const previousDaySummary = summariesByDay.get(dayIndex - 1)! //startingSummary is -1
-  const previousNewRemaining = previousDaySummary.endingCards.newRemaining
+  const previousNewRemaining = previousDaySummary.endCounts.newRemaining
   const currentNewRemaining = previousNewRemaining - daySummaryReviews.new
 
   const daySummary: DayLearningSummary = {
     reviews: daySummaryReviews,
-    endingCards: {
+    endCounts: {
       learning: 0,
       young: 0,
       mature: 0,
@@ -68,7 +68,7 @@ export const daySummaryReducerDefaultValue = (
 
   return {
     summariesByDay: initialSummaries,
-    newCardsRemaining: makeNewCardArray(startingSummary.endingCards.newRemaining),
+    newCardsRemaining: makeNewCardArray(startingSummary.endCounts.newRemaining),
     cardsByDay: new Map(),
     ankiConfig,
     weekConfig,
@@ -84,7 +84,7 @@ export const emptyDaySummary: DayLearningSummary = {
     total: 0,
     max: 0,
   },
-  endingCards: {
+  endCounts: {
     learning: 0,
     young: 0,
     mature: 0,

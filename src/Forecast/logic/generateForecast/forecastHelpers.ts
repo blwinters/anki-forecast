@@ -36,7 +36,7 @@ export const defaultStartingSummary = (deckSize: number): DayLearningSummary => 
     max: 0,
     total: 0,
   },
-  endingCards: {
+  endCounts: {
     learning: 0,
     young: 0,
     mature: 0,

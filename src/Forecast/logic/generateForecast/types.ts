@@ -25,7 +25,7 @@ export interface DaySummaryReviews {
   max: number
 }
 
-export interface DaySummaryEndingCards {
+export interface DaySummaryEndCounts {
   learning: number
   young: number
   mature: number
@@ -35,7 +35,7 @@ export interface DaySummaryEndingCards {
 
 export interface DayLearningSummary {
   reviews: DaySummaryReviews
-  endingCards: DaySummaryEndingCards
+  endCounts: DaySummaryEndCounts
 }
 
 export enum CardStatus {
