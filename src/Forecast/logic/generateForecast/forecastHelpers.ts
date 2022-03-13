@@ -27,7 +27,7 @@ export const defaultAnkiConfig: AnkiConfig = {
   intervalModifier: 1.0,
 }
 
-export const defaultStartingSummary = (deckSize: number): DayLearningSummary => ({
+export const defaultStartingSummary = ({ deckSize }: { deckSize: number }): DayLearningSummary => ({
   reviews: {
     new: 0,
     learning: 0,

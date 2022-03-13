@@ -10,13 +10,13 @@ describe('generateForecast', () => {
   it('returns array matching forecastLength', () => {
     const forecastLength = 10
     const actual = generateForecast({
-      startingSummary: defaultStartingSummary(500),
+      startingSummary: defaultStartingSummary({ deckSize: 500 }),
       ankiConfig: defaultAnkiConfig,
       weekConfig: defaultWeekConfig,
       forecastLength,
     })
 
-    expect(actual.length).toEqual(forecastLength)
+    expect(actual).toHaveLength(forecastLength)
   })
 
   describe('weekConfig', () => {
@@ -34,7 +34,7 @@ describe('generateForecast', () => {
       const expected = newPerWeekday.concat([50, 50, 20])
 
       const forecast = generateForecast({
-        startingSummary: defaultStartingSummary(500),
+        startingSummary: defaultStartingSummary({ deckSize: 500 }),
         ankiConfig: defaultAnkiConfig,
         weekConfig,
         forecastLength,
@@ -42,7 +42,7 @@ describe('generateForecast', () => {
 
       const actual: number[] = forecast.map(daySummary => daySummary.reviews.new)
       expect(actual).toEqual(expected)
-      expect(actual.length).toEqual(forecastLength)
+      expect(actual).toHaveLength(forecastLength)
     })
 
     it('returns weekday-based max reviews', () => {
@@ -59,7 +59,7 @@ describe('generateForecast', () => {
       const expected = maxReviewsPerWeekday.concat([500, 500, 200])
 
       const forecast = generateForecast({
-        startingSummary: defaultStartingSummary(500),
+        startingSummary: defaultStartingSummary({ deckSize: 500 }),
         ankiConfig: defaultAnkiConfig,
         weekConfig,
         forecastLength,
@@ -67,7 +67,7 @@ describe('generateForecast', () => {
 
       const actual: number[] = forecast.map(daySummary => daySummary.reviews.max)
       expect(actual).toEqual(expected)
-      expect(actual.length).toEqual(forecastLength)
+      expect(actual).toHaveLength(forecastLength)
     })
   })
 })

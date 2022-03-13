@@ -60,7 +60,7 @@ const cardsRespectingMaxReviews = (
 ): DayCardArrays => {
   const { newCards, learning, young, mature } = originalCards
 
-  let revised: DayCardArrays = {
+  const revised: DayCardArrays = {
     newCards: [],
     learning: [],
     young: [],

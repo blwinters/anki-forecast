@@ -12,7 +12,7 @@ export const scheduleDayCards = (
   cardsByDay: DayCardsMap,
   ankiConfig: AnkiConfig
 ): CardStatusDiff => {
-  let statusDiff: CardStatusDiff = {
+  const statusDiff: CardStatusDiff = {
     new: 0,
     learning: 0,
     young: 0,
