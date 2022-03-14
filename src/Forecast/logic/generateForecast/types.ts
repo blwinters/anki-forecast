@@ -27,12 +27,6 @@ export interface DaySummaryEndCounts {
   newRemaining: number
 }
 
-export interface CardStatusDiff {
-  new: number
-  young: number
-  mature: number
-}
-
 export interface DaySummary {
   reviews: DaySummaryReviews
   endCounts: DaySummaryEndCounts
@@ -42,6 +36,12 @@ export enum CardStatus {
   new,
   young,
   mature,
+}
+
+export interface CardStatusDiff {
+  new: number
+  young: number
+  mature: number
 }
 
 export type DaySummaryMap = Map<number, DaySummary>
