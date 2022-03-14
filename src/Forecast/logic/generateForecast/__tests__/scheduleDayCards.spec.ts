@@ -1,8 +1,8 @@
-import { DayCards } from './DayCards'
-import { defaultAnkiConfig, makeNewCardArray } from './forecastHelpers'
-import { scheduleDayCards } from './scheduleDayCards'
-import { getDayCards } from './getDayCards'
-import { AnkiConfig, DayCardsMap, DayConfig } from './types'
+import { DayCards } from '../DayCards'
+import { defaultAnkiConfig, makeNewCardArray } from '../forecastHelpers'
+import { scheduleDayCards } from '../scheduleDayCards'
+import { getDayCards } from '../getDayCards'
+import { AnkiConfig, DayCardsMap, DayConfig } from '../types'
 
 describe('scheduleDayCards', () => {
   let dayIndex: number

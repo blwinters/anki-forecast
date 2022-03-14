@@ -1,7 +1,7 @@
-import { ReviewCountProps, getDayCards } from './getDayCards'
-import { DayCardCounts } from './DayCards'
-import { CardStatus, DayCardsMap, DayConfig } from './types'
-import { makeCardArray, makeNewCardArray } from './forecastHelpers'
+import { ReviewCountProps, getDayCards } from '../getDayCards'
+import { DayCardCounts } from '../DayCards'
+import { CardStatus, DayCardsMap, DayConfig } from '../types'
+import { makeCardArray, makeNewCardArray } from '../forecastHelpers'
 
 describe('getReviewCounts', () => {
   const defaultDayConfig: DayConfig = { newCards: 30, maxReviews: 200 }

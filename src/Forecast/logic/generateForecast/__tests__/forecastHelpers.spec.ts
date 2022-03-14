@@ -1,4 +1,4 @@
-import { defaultWeekConfig } from './forecastHelpers'
+import { defaultWeekConfig } from '../forecastHelpers'
 
 describe('defaultWeekConfig', () => {
   it('has 7 days', () => {
