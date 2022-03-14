@@ -112,13 +112,64 @@ describe('getReviewCounts', () => {
     })
   })
 
-  //TODO: write these tests
   describe('prioritization', () => {
-    it('fetches young and mature reviews second', () => {
-      //
+    let cardCountProps: ReviewCountProps
+
+    const youngCards = makeCardArray(CardStatus.young, 20)
+    const matureCards = makeCardArray(CardStatus.mature, 20)
+
+    beforeEach(() => {
+      const dayIndex = 5
+      const cardsByDay = new Map()
+      cardsByDay.set(dayIndex, youngCards.concat(matureCards))
+      cardCountProps = {
+        dayIndex,
+        dayConfig: defaultDayConfig,
+        cardsByDay,
+        newCardsRemaining: makeNewCardArray(100),
+      }
     })
+
+    it('fetches young reviews first', () => {
+      const props: ReviewCountProps = {
+        ...cardCountProps,
+        dayConfig: {
+          maxReviews: 10,
+          newCards: 20,
+        },
+      }
+      const { young, mature, newCards } = getDayCards(props).toCounts()
+      expect(young).toBe(10)
+      expect(mature).toBe(0)
+      expect(newCards).toBe(0)
+    })
+
+    it('fetches mature reviews second', () => {
+      const props: ReviewCountProps = {
+        ...cardCountProps,
+        dayConfig: {
+          maxReviews: 35,
+          newCards: 20,
+        },
+      }
+      const { young, mature, newCards } = getDayCards(props).toCounts()
+      expect(young).toBe(20)
+      expect(mature).toBe(15)
+      expect(newCards).toBe(0)
+    })
+
     it('fetches new cards last', () => {
-      //
+      const props: ReviewCountProps = {
+        ...cardCountProps,
+        dayConfig: {
+          maxReviews: 57,
+          newCards: 20,
+        },
+      }
+      const { young, mature, newCards } = getDayCards(props).toCounts()
+      expect(young).toBe(20)
+      expect(mature).toBe(20)
+      expect(newCards).toBe(17)
     })
   })
 })

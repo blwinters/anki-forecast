@@ -67,9 +67,9 @@ const cardsRespectingMaxReviews = (
     return cards.slice(0, availableSpace)
   }
 
-  revised.newCards = sliceFittingAvailableSpace(newCards)
   revised.young = sliceFittingAvailableSpace(young)
   revised.mature = sliceFittingAvailableSpace(mature)
+  revised.newCards = sliceFittingAvailableSpace(newCards)
 
   return revised
 }
