@@ -8,6 +8,7 @@ import type {
   CardInfo,
   CardStatusDiff,
   DaySummaryEndCounts,
+  DaySummaryReviews,
 } from './types'
 import { getDayCards } from './getDayCards'
 import { makeNewCardArray } from './forecastHelpers'
@@ -41,7 +42,7 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
   })
 
   const cardStatusDiff = scheduleDayCards(dayCards, cardsByDay, ankiConfig)
-  const previousEndCounts = summariesByDay.get(dayIndex - 1)!.endCounts //startingSummary guarantees -1
+  const previousEndCounts = summariesByDay.get(dayIndex - 1)?.endCounts ?? emptyEndCounts
 
   const daySummary: DayLearningSummary = {
     reviews: dayCards.getDaySummaryReviews(dayConfig.maxReviews),
@@ -85,20 +86,24 @@ export const daySummaryReducerDefaultValue = (
   }
 }
 
+const emptyReviews: DaySummaryReviews = {
+  new: 0,
+  learning: 0,
+  young: 0,
+  mature: 0,
+  total: 0,
+  max: 0,
+}
+
+const emptyEndCounts: DaySummaryEndCounts = {
+  learning: 0,
+  young: 0,
+  mature: 0,
+  totalActive: 0,
+  newRemaining: 0,
+}
+
 export const emptyDaySummary: DayLearningSummary = {
-  reviews: {
-    new: 0,
-    learning: 0,
-    young: 0,
-    mature: 0,
-    total: 0,
-    max: 0,
-  },
-  endCounts: {
-    learning: 0,
-    young: 0,
-    mature: 0,
-    totalActive: 0,
-    newRemaining: 0,
-  },
+  reviews: emptyReviews,
+  endCounts: emptyEndCounts,
 }
