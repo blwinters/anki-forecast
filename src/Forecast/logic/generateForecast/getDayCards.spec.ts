@@ -37,20 +37,6 @@ describe('getReviewCounts', () => {
     })
 
     describe('reviews', () => {
-      it('identifies learning cards by interval', () => {
-        const learningCount = 9
-        const cardsByDay: DayCardsMap = new Map()
-        const dayLearningCards = makeCardArray(CardStatus.learning, learningCount)
-        cardsByDay.set(0, dayLearningCards)
-
-        const actual = getDayCards({
-          ...defaultCountProps,
-          cardsByDay,
-        }).toCounts()
-
-        expect(actual.learning).toEqual(learningCount)
-      })
-
       it('identifies young cards by interval', () => {
         const youngCount = 11
         const cardsByDay: DayCardsMap = new Map()
@@ -81,10 +67,9 @@ describe('getReviewCounts', () => {
 
       it('identifies all card statuses in combination', () => {
         const cardsByDay: DayCardsMap = new Map()
-        const learningCards = makeCardArray(CardStatus.learning, 15)
         const youngCards = makeCardArray(CardStatus.young, 20)
         const matureCards = makeCardArray(CardStatus.mature, 7)
-        const allReviewCards = learningCards.concat(youngCards).concat(matureCards)
+        const allReviewCards = youngCards.concat(matureCards)
         cardsByDay.set(0, allReviewCards)
 
         const actual = getDayCards({
@@ -98,10 +83,9 @@ describe('getReviewCounts', () => {
 
         const expected: DayCardCounts = {
           newCards: 35,
-          learning: 15,
           young: 20,
           mature: 7,
-          total: 77,
+          total: 62,
         }
 
         expect(actual).toEqual(expected)
@@ -128,11 +112,8 @@ describe('getReviewCounts', () => {
     })
   })
 
+  //TODO: write these tests
   describe('prioritization', () => {
-    it('fetches interday learning cards first', () => {
-      //
-    })
-
     it('fetches young and mature reviews second', () => {
       //
     })

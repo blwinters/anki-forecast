@@ -62,7 +62,6 @@ const calculateEndCounts = ({
   previousEndCounts: prevCounts,
   cardStatusDiff: diff,
 }: EndCountProps): DaySummaryEndCounts => ({
-  learning: prevCounts.learning + diff.learning,
   young: prevCounts.young + diff.young,
   mature: prevCounts.mature + diff.mature,
   totalActive: prevCounts.totalActive - diff.new,
@@ -88,7 +87,6 @@ export const daySummaryReducerDefaultValue = (
 
 const emptyReviews: DaySummaryReviews = {
   new: 0,
-  learning: 0,
   young: 0,
   mature: 0,
   total: 0,
@@ -96,7 +94,6 @@ const emptyReviews: DaySummaryReviews = {
 }
 
 const emptyEndCounts: DaySummaryEndCounts = {
-  learning: 0,
   young: 0,
   mature: 0,
   totalActive: 0,

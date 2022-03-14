@@ -17,7 +17,6 @@ export const scheduleDayCards = ({
   const { graduatingInterval } = ankiConfig
 
   let newDiff = 0
-  const learningDiff = 0
   let youngDiff = 0
   const matureDiff = 0
 
@@ -31,7 +30,6 @@ export const scheduleDayCards = ({
 
   return {
     new: newDiff,
-    learning: learningDiff,
     young: youngDiff,
     mature: matureDiff,
   }

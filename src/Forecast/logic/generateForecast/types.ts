@@ -1,13 +1,9 @@
 export interface AnkiConfig {
-  baseLearningReviews: number
-  learningAccuracy: number
   reviewAccuracy: number
   graduatingInterval: number
   maxInterval: number
   againMultiplier: number
-  hardMultiplier: number
   goodMultiplier: number
-  easyBonus: number
   intervalModifier: number
 }
 
@@ -18,7 +14,6 @@ export interface DayConfig {
 
 export interface DaySummaryReviews {
   new: number
-  learning: number
   young: number
   mature: number
   total: number
@@ -26,7 +21,6 @@ export interface DaySummaryReviews {
 }
 
 export interface DaySummaryEndCounts {
-  learning: number
   young: number
   mature: number
   totalActive: number
@@ -35,7 +29,6 @@ export interface DaySummaryEndCounts {
 
 export interface CardStatusDiff {
   new: number
-  learning: number
   young: number
   mature: number
 }
@@ -47,7 +40,6 @@ export interface DayLearningSummary {
 
 export enum CardStatus {
   new,
-  learning,
   young,
   mature,
 }
