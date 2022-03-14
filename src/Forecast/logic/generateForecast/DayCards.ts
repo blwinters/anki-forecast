@@ -26,6 +26,15 @@ export class DayCards {
     return this.cardArrays
   }
 
+  getCardIdsByStatus() {
+    return {
+      newIds: this.cardArrays.newCards.map(card => card.id),
+      learningIds: this.cardArrays.learning.map(card => card.id),
+      youngIds: this.cardArrays.young.map(card => card.id),
+      matureIds: this.cardArrays.mature.map(card => card.id),
+    }
+  }
+
   toCounts(): DayCardCounts {
     const { newCards, learning, young, mature } = this.cardArrays
     return {

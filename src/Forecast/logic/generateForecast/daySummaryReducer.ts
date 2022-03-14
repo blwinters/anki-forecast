@@ -41,7 +41,7 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
     newCardsRemaining: acc.newCardsRemaining,
   })
 
-  const cardStatusDiff = scheduleDayCards(dayCards, cardsByDay, ankiConfig)
+  const cardStatusDiff = scheduleDayCards({ dayIndex, dayCards, cardsByDay, ankiConfig })
   const previousEndCounts = summariesByDay.get(dayIndex - 1)?.endCounts ?? emptyEndCounts
 
   const daySummary: DayLearningSummary = {

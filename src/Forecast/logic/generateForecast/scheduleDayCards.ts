@@ -1,23 +1,65 @@
 import { DayCards } from './DayCards'
-import type { AnkiConfig, CardStatusDiff, DayCardsMap } from './types'
+import type { AnkiConfig, CardInfo, CardStatusDiff, DayCardsMap } from './types'
 
-/**
- * @param dayCards   - An object containing the cards fetched for the day's review
- * @param cardsByDay - A map of the cards to be mutated in place with
- *                     new due day indices and intervals for the day's cards
- * @param ankiConfig - Config for adjusting new interval values
- */
-export const scheduleDayCards = (
-  dayCards: DayCards,
-  cardsByDay: DayCardsMap,
+interface Props {
+  cardsByDay: DayCardsMap //mutated in place with new day indices for each reviewed card
+  dayCards: DayCards //DTO with cards to be reviewed for this day
+  dayIndex: number
   ankiConfig: AnkiConfig
-): CardStatusDiff => {
-  const statusDiff: CardStatusDiff = {
-    new: 0,
-    learning: 0,
-    young: 0,
-    mature: 0,
-  }
+}
 
-  return statusDiff
+export const scheduleDayCards = ({
+  cardsByDay,
+  dayCards,
+  dayIndex,
+  ankiConfig,
+}: Props): CardStatusDiff => {
+  const { graduatingInterval } = ankiConfig
+
+  let newDiff = 0
+  const learningDiff = 0
+  let youngDiff = 0
+  const matureDiff = 0
+
+  const { newCards } = dayCards.getCardArrays()
+  const { youngIds, matureIds } = dayCards.getCardIdsByStatus()
+
+  newDiff -= newCards.length
+  youngDiff += newCards.length
+
+  scheduleNewCards({ newCards, cardsByDay, dayIndex, graduatingInterval })
+
+  return {
+    new: newDiff,
+    learning: learningDiff,
+    young: youngDiff,
+    mature: matureDiff,
+  }
+}
+
+interface ScheduleNewProps {
+  newCards: CardInfo[]
+  cardsByDay: DayCardsMap
+  dayIndex: number
+  graduatingInterval: number
+}
+const scheduleNewCards = ({
+  newCards,
+  cardsByDay,
+  dayIndex,
+  graduatingInterval,
+}: ScheduleNewProps) => {
+  const updatedNewCards: CardInfo[] = newCards.map(card => ({
+    id: card.id,
+    latestInterval: graduatingInterval,
+  }))
+  const newIndex = dayIndex + graduatingInterval
+
+  appendToCardsByDayAtIndex(cardsByDay, newIndex, updatedNewCards)
+}
+
+const appendToCardsByDayAtIndex = (cardsByDay: DayCardsMap, index: number, cards: CardInfo[]) => {
+  const existingAtIndex = cardsByDay.get(index) ?? []
+  const combined = existingAtIndex.concat(cards)
+  cardsByDay.set(index, combined)
 }
