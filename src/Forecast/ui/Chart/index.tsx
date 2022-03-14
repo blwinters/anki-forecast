@@ -24,7 +24,7 @@ const Chart = ({ data }: ChartProps) => {
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey="totalReviews" name="Total Reviews" stackId="a" fill="#8884d8" />
+      <Bar dataKey="totalActive" name="Total Reviews" stackId="a" fill="#8884d8" />
     </BarChart>
   )
 }
@@ -33,6 +33,7 @@ interface DataPoint {
   name: string
   newReviews: number
   totalReviews: number
+  totalActive: number
 }
 
 const mapDataForChart = (data: DayLearningSummary[]): DataPoint[] => {
@@ -41,6 +42,7 @@ const mapDataForChart = (data: DayLearningSummary[]): DataPoint[] => {
       name: `${index + 1}`,
       newReviews: summary.reviews.new,
       totalReviews: summary.reviews.total,
+      totalActive: summary.endCounts.totalActive,
     }
   })
 }
