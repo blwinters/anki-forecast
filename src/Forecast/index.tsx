@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { Button } from '@mui/material'
 import Chart from './ui/Chart'
-import { DayLearningSummary } from './logic/generateForecast/types'
+import { DaySummary } from './logic/generateForecast/types'
 import { generateForecast } from './logic/generateForecast'
 import {
   defaultAnkiConfig,
@@ -10,7 +10,7 @@ import {
 } from './logic/generateForecast/forecastHelpers'
 
 const Forecast = () => {
-  const [data, setData] = useState<DayLearningSummary[]>([])
+  const [data, setData] = useState<DaySummary[]>([])
 
   const onUpdate = useCallback(() => {
     const forecast = generateForecast({

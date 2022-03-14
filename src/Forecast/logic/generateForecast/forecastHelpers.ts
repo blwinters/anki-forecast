@@ -1,4 +1,4 @@
-import type { DayLearningSummary, DayConfig, WeekConfig, AnkiConfig, CardInfo } from './types'
+import type { DaySummary, DayConfig, WeekConfig, AnkiConfig, CardInfo } from './types'
 import { CardStatus } from './types'
 
 export const makeWeekConfigByRepeating = (dayConfig: DayConfig): WeekConfig => {
@@ -23,7 +23,7 @@ export const defaultAnkiConfig: AnkiConfig = {
   intervalModifier: 1.0,
 }
 
-export const defaultStartingSummary = ({ deckSize }: { deckSize: number }): DayLearningSummary => ({
+export const defaultStartingSummary = ({ deckSize }: { deckSize: number }): DaySummary => ({
   reviews: {
     new: 0,
     young: 0,

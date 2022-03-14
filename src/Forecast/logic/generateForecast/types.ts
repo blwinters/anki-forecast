@@ -33,7 +33,7 @@ export interface CardStatusDiff {
   mature: number
 }
 
-export interface DayLearningSummary {
+export interface DaySummary {
   reviews: DaySummaryReviews
   endCounts: DaySummaryEndCounts
 }
@@ -44,7 +44,7 @@ export enum CardStatus {
   mature,
 }
 
-export type DaySummaryMap = Map<number, DayLearningSummary>
+export type DaySummaryMap = Map<number, DaySummary>
 export type DayCardsMap = Map<number, CardInfo[]>
 
 export interface CardInfo {

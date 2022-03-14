@@ -4,7 +4,7 @@ import type {
   AnkiConfig,
   DayConfig,
   WeekConfig,
-  DayLearningSummary,
+  DaySummary,
   CardInfo,
   CardStatusDiff,
   DaySummaryEndCounts,
@@ -44,7 +44,7 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
   const cardStatusDiff = scheduleDayCards({ dayIndex, dayCards, cardsByDay, ankiConfig })
   const previousEndCounts = summariesByDay.get(dayIndex - 1)?.endCounts ?? emptyEndCounts
 
-  const daySummary: DayLearningSummary = {
+  const daySummary: DaySummary = {
     reviews: dayCards.getDaySummaryReviews(dayConfig.maxReviews),
     endCounts: calculateEndCounts({ previousEndCounts, cardStatusDiff }),
   }
@@ -69,7 +69,7 @@ const calculateEndCounts = ({
 })
 
 export const daySummaryReducerDefaultValue = (
-  startingSummary: DayLearningSummary,
+  startingSummary: DaySummary,
   ankiConfig: AnkiConfig,
   weekConfig: WeekConfig
 ): DaySummaryAccumulator => {
@@ -100,7 +100,7 @@ const emptyEndCounts: DaySummaryEndCounts = {
   newRemaining: 0,
 }
 
-export const emptyDaySummary: DayLearningSummary = {
+export const emptyDaySummary: DaySummary = {
   reviews: emptyReviews,
   endCounts: emptyEndCounts,
 }

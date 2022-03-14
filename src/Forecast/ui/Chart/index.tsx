@@ -1,9 +1,9 @@
 import React from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
-import { DayLearningSummary } from '../../logic/generateForecast/types'
+import { DaySummary } from '../../logic/generateForecast/types'
 
 export interface ChartProps {
-  data: DayLearningSummary[]
+  data: DaySummary[]
 }
 
 const Chart = ({ data }: ChartProps) => {
@@ -36,7 +36,7 @@ interface DataPoint {
   totalActive: number
 }
 
-const mapDataForChart = (data: DayLearningSummary[]): DataPoint[] => {
+const mapDataForChart = (data: DaySummary[]): DataPoint[] => {
   return data.map((summary, index) => {
     return {
       name: `${index + 1}`,
