@@ -13,8 +13,9 @@ const Forecast = () => {
   const [data, setData] = useState<DaySummary[]>([])
 
   const onUpdate = useCallback(() => {
+    const startingSummary = defaultStartingSummary({ deckSize: 2000 })
     const forecast = generateForecast({
-      startingSummary: defaultStartingSummary({ deckSize: 2000 }),
+      startingSummary,
       forecastLength: 60,
       ankiConfig: defaultAnkiConfig,
       weekConfig: defaultWeekConfig,
