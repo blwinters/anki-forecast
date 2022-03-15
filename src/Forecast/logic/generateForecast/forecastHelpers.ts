@@ -43,18 +43,29 @@ export const makeNewCardArray = (length: number) => {
   return makeCardArray(CardStatus.new, length)
 }
 
-export const makeCardArray = (status: CardStatus, length: number): CardInfo[] => {
+export const makeCardArray = (
+  status: CardStatus,
+  length: number,
+  latestInterval?: number
+): CardInfo[] => {
   const baseArray = Array.from({ length: length }, () => null)
   return baseArray.map((_, index) => ({
     id: index,
-    latestInterval: intervalForIndex(index, status),
+    latestInterval: latestInterval ?? testingIntervalForIndex(index, status),
   }))
 }
 
-const intervalForIndex = (index: number, status: CardStatus): number => {
+const testingIntervalForIndex = (
+  index: number,
+  status: CardStatus,
+  graduatingInterval = 1
+): number => {
+  const rangeFraction = 1 / (index + 2)
+  const rangeValue = (matureCardThreshold - 1) * rangeFraction
+
   switch (status) {
     case CardStatus.young:
-      return 1 + index
+      return graduatingInterval + Math.round(rangeValue)
     case CardStatus.mature:
       return matureCardThreshold + (index % 2) // interval >= threshold
     case CardStatus.new:

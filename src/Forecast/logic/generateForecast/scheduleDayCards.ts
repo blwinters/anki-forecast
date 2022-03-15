@@ -1,4 +1,5 @@
 import { DayCards } from './DayCards'
+import { matureCardThreshold } from './forecastHelpers'
 import type { AnkiConfig, CardInfo, CardStatusDiff, DayCardsMap } from './types'
 
 interface Props {
@@ -18,15 +19,22 @@ export const scheduleDayCards = ({
 
   let newDiff = 0
   let youngDiff = 0
-  const matureDiff = 0
+  let matureDiff = 0
 
-  const { newCards } = dayCards.getCardArrays()
-  const { youngIds, matureIds } = dayCards.getCardIdsByStatus()
+  const { newCards, young, mature } = dayCards.getCardArrays()
+
+  scheduleNewCards({ newCards, cardsByDay, dayIndex, afterInterval: graduatingInterval })
+  const { maturationCount } = scheduleReviewCards({
+    reviewCards: young.concat(mature),
+    cardsByDay,
+    dayIndex,
+    ankiConfig,
+  })
 
   newDiff -= newCards.length
   youngDiff += newCards.length
-
-  scheduleNewCards({ newCards, cardsByDay, dayIndex, graduatingInterval })
+  youngDiff -= maturationCount
+  matureDiff += maturationCount
 
   return {
     new: newDiff,
@@ -39,21 +47,58 @@ interface ScheduleNewProps {
   newCards: CardInfo[]
   cardsByDay: DayCardsMap
   dayIndex: number
-  graduatingInterval: number
+  afterInterval: number
 }
+
 const scheduleNewCards = ({
   newCards,
   cardsByDay,
   dayIndex,
-  graduatingInterval,
+  afterInterval: interval,
 }: ScheduleNewProps) => {
   const updatedNewCards: CardInfo[] = newCards.map(card => ({
     id: card.id,
-    latestInterval: graduatingInterval,
+    latestInterval: interval,
   }))
-  const newIndex = dayIndex + graduatingInterval
+  const newIndex = dayIndex + interval
 
   appendToCardsByDayAtIndex(cardsByDay, newIndex, updatedNewCards)
+}
+
+interface ScheduleReviewsProps {
+  reviewCards: CardInfo[]
+  cardsByDay: DayCardsMap
+  dayIndex: number
+  ankiConfig: AnkiConfig
+}
+
+const scheduleReviewCards = ({
+  reviewCards,
+  cardsByDay,
+  dayIndex,
+  ankiConfig,
+}: ScheduleReviewsProps) => {
+  const { goodMultiplier } = ankiConfig
+  let maturationCount = 0
+
+  reviewCards.forEach(card => {
+    const newInterval = Math.round(card.latestInterval * goodMultiplier)
+    const newIndex = dayIndex + newInterval
+    if (card.latestInterval < matureCardThreshold && newInterval >= matureCardThreshold) {
+      maturationCount += 1
+    }
+
+    const newCard: CardInfo = {
+      id: card.id,
+      latestInterval: newInterval,
+    }
+
+    appendToCardsByDayAtIndex(cardsByDay, newIndex, [newCard])
+  })
+
+  return {
+    maturationCount,
+  }
 }
 
 const appendToCardsByDayAtIndex = (cardsByDay: DayCardsMap, index: number, cards: CardInfo[]) => {
