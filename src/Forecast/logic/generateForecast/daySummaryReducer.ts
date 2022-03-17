@@ -41,6 +41,12 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
     newCardsRemaining: acc.newCardsRemaining,
   })
 
+  const { newIds: todayNewIds } = dayCards.getCardIdsByStatus()
+  const tomorrowNewCardsRemaining = acc.newCardsRemaining.filter(card => {
+    return !todayNewIds.includes(card.id)
+  })
+  acc.newCardsRemaining = tomorrowNewCardsRemaining
+
   const cardStatusDiff = scheduleDayCards({ dayIndex, dayCards, cardsByDay, ankiConfig })
   const previousEndCounts = summariesByDay.get(dayIndex - 1)?.endCounts ?? emptyEndCounts
 
