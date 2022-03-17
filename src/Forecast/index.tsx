@@ -16,7 +16,7 @@ const Forecast = () => {
     const startingSummary = defaultStartingSummary({ deckSize: 2000 })
     const forecast = generateForecast({
       startingSummary,
-      forecastLength: 60,
+      forecastLength: 180,
       ankiConfig: defaultAnkiConfig,
       weekConfig: defaultWeekConfig,
     })
