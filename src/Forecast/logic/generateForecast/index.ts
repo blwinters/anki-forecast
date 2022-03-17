@@ -27,6 +27,6 @@ export const generateForecast = ({
 
   summariesByDay.delete(-1) //remove initial summary
 
-  const dayIndices = Array.from(summariesByDay.keys()).sort()
+  const dayIndices = Array.from(summariesByDay.keys()).sort((a, b) => a - b)
   return dayIndices.map(dayIndex => summariesByDay.get(dayIndex) ?? emptyDaySummary)
 }
