@@ -7,7 +7,7 @@ export interface ChartProps {
 }
 
 const Chart = ({ data }: ChartProps) => {
-  const chartData = mapDataForChart(data)
+  const chartData = data.map(chartDataMapper)
 
   return (
     <ComposedChart
@@ -84,17 +84,15 @@ interface DataPoint {
   totalActive: number
 }
 
-const mapDataForChart = (data: DaySummary[]): DataPoint[] => {
-  return data.map((summary, index) => {
-    return {
-      name: `${index + 1}`,
-      newReviews: summary.reviews.new,
-      youngReviews: summary.reviews.young,
-      matureReviews: summary.reviews.mature,
-      totalReviews: summary.reviews.total,
-      totalActive: summary.endCounts.totalActive,
-    }
-  })
+const chartDataMapper = (summary: DaySummary, index: number): DataPoint => {
+  return {
+    name: `${index + 1}`,
+    newReviews: summary.reviews.new,
+    youngReviews: summary.reviews.young,
+    matureReviews: summary.reviews.mature,
+    totalReviews: summary.reviews.total,
+    totalActive: summary.endCounts.totalActive,
+  }
 }
 
 interface ForecastTheme {
