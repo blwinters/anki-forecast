@@ -5,7 +5,7 @@ import {
   emptyDaySummary,
 } from './daySummaryReducer'
 
-interface Props {
+export interface ForecastProps {
   startingSummary: DaySummary
   forecastLength: number
   ankiConfig: AnkiConfig
@@ -17,7 +17,7 @@ export const generateForecast = ({
   forecastLength,
   ankiConfig,
   weekConfig,
-}: Props): DaySummary[] => {
+}: ForecastProps): DaySummary[] => {
   const reducerDefaultValue = daySummaryReducerDefaultValue(startingSummary, ankiConfig, weekConfig)
   const arrayOfLength = Array.from({ length: forecastLength }, () => null)
   const summariesByDay: DaySummaryMap = arrayOfLength.reduce(
