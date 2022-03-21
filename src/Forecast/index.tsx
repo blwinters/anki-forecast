@@ -7,7 +7,7 @@ import ControlPanel from './ui/ControlPanel'
 const Forecast = () => {
   const [data, setData] = useState<DaySummary[]>([])
 
-  const onUpdate = useCallback((forecastProps: ForecastProps) => {
+  const onUpdateChart = useCallback((forecastProps: ForecastProps) => {
     const forecast = generateForecast(forecastProps)
     setData(forecast)
   }, [])
@@ -15,7 +15,7 @@ const Forecast = () => {
   return (
     <>
       <Chart data={data} />
-      <ControlPanel onUpdate={onUpdate} />
+      <ControlPanel onUpdateChart={onUpdateChart} />
     </>
   )
 }

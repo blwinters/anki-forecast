@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import { Box, Button, Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { ForecastProps } from '../../logic/generateForecast'
 import {
   defaultAnkiConfig,
@@ -9,10 +9,10 @@ import {
 import NumberInput, { NumberInputProps, NumberState } from './NumberInput'
 
 interface ControlPanelProps {
-  onUpdate: (forecastProps: ForecastProps) => void
+  onUpdateChart: (forecastProps: ForecastProps) => void
 }
 
-const ControlPanel = ({ onUpdate }: ControlPanelProps): JSX.Element => {
+const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Element => {
   const forecastLengthState: NumberState = useState<number>(180)
   const numberOfCardsState: NumberState = useState<number>(1000)
   const newPerDayState: NumberState = useState<number>(20)
@@ -31,7 +31,7 @@ const ControlPanel = ({ onUpdate }: ControlPanelProps): JSX.Element => {
     [newPerDayState, maxReviewsState]
   )
 
-  const onClickUpdate = useCallback(() => {
+  const onSubmit = useCallback(() => {
     onUpdate({
       startingSummary,
       forecastLength: forecastLengthState[0],
@@ -45,21 +45,25 @@ const ControlPanel = ({ onUpdate }: ControlPanelProps): JSX.Element => {
       label: '# of days',
       numberState: forecastLengthState,
       maxValue: 730,
+      onSubmit: onSubmit,
     },
     {
       label: '# of cards',
       numberState: numberOfCardsState,
       maxValue: 100_000,
+      onSubmit: onSubmit,
     },
     {
       label: 'New per day',
       numberState: newPerDayState,
       maxValue: 200,
+      onSubmit: onSubmit,
     },
     {
       label: 'Max reviews per day',
       numberState: maxReviewsState,
       maxValue: 1000,
+      onSubmit: onSubmit,
     },
   ]
 
@@ -74,9 +78,6 @@ const ControlPanel = ({ onUpdate }: ControlPanelProps): JSX.Element => {
           <NumberInput key={index} {...props} />
         ))}
       </Stack>
-      <Button variant="contained" onClick={onClickUpdate}>
-        Update
-      </Button>
     </Box>
   )
 }

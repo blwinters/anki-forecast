@@ -7,9 +7,10 @@ export interface NumberInputProps {
   label: string
   numberState: NumberState
   maxValue: number
+  onSubmit: () => void
 }
 
-const NumberInput = ({ label, maxValue, numberState }: NumberInputProps) => {
+const NumberInput = ({ label, maxValue, numberState, onSubmit }: NumberInputProps) => {
   const [value, setValue] = numberState
 
   const minValue = 0
@@ -18,8 +19,9 @@ const NumberInput = ({ label, maxValue, numberState }: NumberInputProps) => {
     setValue(parseInt(event.target.value))
   }
 
-  const onBlur = () => {
+  const submitIfValid = () => {
     //TODO: validate the value and show helper text if needed
+    onSubmit()
   }
 
   return (
@@ -29,8 +31,13 @@ const NumberInput = ({ label, maxValue, numberState }: NumberInputProps) => {
         width: '150px',
       }}
       onChange={onTextChange}
+      onKeyPress={event => {
+        if (event.key === 'Enter') {
+          submitIfValid()
+        }
+      }}
       label={label}
-      onBlur={onBlur}
+      onBlur={submitIfValid}
       inputProps={{
         type: 'number',
         variant: 'standard',
