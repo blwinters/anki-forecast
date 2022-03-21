@@ -14,10 +14,14 @@ interface ControlPanelProps {
 
 const ControlPanel = ({ onUpdate }: ControlPanelProps): JSX.Element => {
   const forecastLengthState: NumberState = useState<number>(180)
+  const numberOfCardsState: NumberState = useState<number>(1000)
   const newPerDayState: NumberState = useState<number>(20)
   const maxReviewsState: NumberState = useState<number>(200)
 
-  const startingSummary = useMemo(() => defaultStartingSummary({ deckSize: 1000 }), [])
+  const startingSummary = useMemo(
+    () => defaultStartingSummary({ deckSize: numberOfCardsState[0] }),
+    [numberOfCardsState]
+  )
   const weekConfig = useMemo(
     () =>
       makeWeekConfigByRepeating({
@@ -41,6 +45,11 @@ const ControlPanel = ({ onUpdate }: ControlPanelProps): JSX.Element => {
       label: '# of days',
       numberState: forecastLengthState,
       maxValue: 730,
+    },
+    {
+      label: '# of cards',
+      numberState: numberOfCardsState,
+      maxValue: 100_000,
     },
     {
       label: 'New per day',
