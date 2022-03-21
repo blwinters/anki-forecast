@@ -1,32 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { OutlinedInputProps, TextField } from '@mui/material'
-
-export type NumberState = [number, (value: number) => void]
 
 export interface NumberInputProps {
   label: string
-  numberState: NumberState
+  value: number
+  submitValue: (value: number) => void
   maxValue: number
-  onSubmit: () => void
 }
 
-const NumberInput = ({ label, maxValue, numberState, onSubmit }: NumberInputProps) => {
-  const [value, setValue] = numberState
+const NumberInput = ({ label, maxValue, value: initialValue, submitValue }: NumberInputProps) => {
+  const [inputValue, setInputValue] = useState<number>(initialValue)
 
   const minValue = 0
 
   const onTextChange: OutlinedInputProps['onChange'] = event => {
-    setValue(parseInt(event.target.value))
+    setInputValue(parseInt(event.target.value))
   }
 
   const submitIfValid = () => {
     //TODO: validate the value and show helper text if needed
-    onSubmit()
+    submitValue(inputValue)
   }
 
   return (
     <TextField
-      value={value}
+      value={inputValue}
       style={{
         width: '150px',
       }}

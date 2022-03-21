@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Box, Stack } from '@mui/material'
 import { ForecastProps } from '../../logic/generateForecast'
 import {
@@ -6,64 +6,64 @@ import {
   defaultStartingSummary,
   makeWeekConfigByRepeating,
 } from '../../logic/generateForecast/forecastHelpers'
-import NumberInput, { NumberInputProps, NumberState } from './NumberInput'
+import NumberInput, { NumberInputProps } from './NumberInput'
 
 interface ControlPanelProps {
   onUpdateChart: (forecastProps: ForecastProps) => void
 }
 
 const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Element => {
-  const forecastLengthState: NumberState = useState<number>(180)
-  const numberOfCardsState: NumberState = useState<number>(1000)
-  const newPerDayState: NumberState = useState<number>(20)
-  const maxReviewsState: NumberState = useState<number>(200)
+  const [forecastLength, setForecastLength] = useState<number>(180)
+  const [numberOfCards, setNumberOfCards] = useState<number>(1000)
+  const [newPerDay, setNewPerDay] = useState<number>(20)
+  const [maxReviews, setMaxReviews] = useState<number>(200)
 
   const startingSummary = useMemo(
-    () => defaultStartingSummary({ deckSize: numberOfCardsState[0] }),
-    [numberOfCardsState]
+    () => defaultStartingSummary({ deckSize: numberOfCards }),
+    [numberOfCards]
   )
   const weekConfig = useMemo(
     () =>
       makeWeekConfigByRepeating({
-        newCards: newPerDayState[0],
-        maxReviews: maxReviewsState[0],
+        newCards: newPerDay,
+        maxReviews,
       }),
-    [newPerDayState, maxReviewsState]
+    [newPerDay, maxReviews]
   )
 
-  const onSubmit = useCallback(() => {
+  useEffect(() => {
     onUpdate({
       startingSummary,
-      forecastLength: forecastLengthState[0],
+      forecastLength,
       ankiConfig: defaultAnkiConfig,
       weekConfig: weekConfig,
     })
-  }, [onUpdate, startingSummary, forecastLengthState, weekConfig])
+  }, [onUpdate, startingSummary, forecastLength, weekConfig])
 
   const numberInputs: NumberInputProps[] = [
     {
       label: '# of days',
-      numberState: forecastLengthState,
+      value: forecastLength,
+      submitValue: setForecastLength,
       maxValue: 730,
-      onSubmit: onSubmit,
     },
     {
       label: '# of cards',
-      numberState: numberOfCardsState,
+      value: numberOfCards,
+      submitValue: setNumberOfCards,
       maxValue: 100_000,
-      onSubmit: onSubmit,
     },
     {
       label: 'New per day',
-      numberState: newPerDayState,
+      value: newPerDay,
+      submitValue: setNewPerDay,
       maxValue: 200,
-      onSubmit: onSubmit,
     },
     {
       label: 'Max reviews per day',
-      numberState: maxReviewsState,
+      value: maxReviews,
+      submitValue: setMaxReviews,
       maxValue: 1000,
-      onSubmit: onSubmit,
     },
   ]
 
