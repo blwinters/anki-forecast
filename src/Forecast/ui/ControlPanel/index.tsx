@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { Box, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { ForecastProps } from '../../logic/generateForecast'
 import {
   defaultAnkiConfig,
@@ -68,17 +68,11 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
   ]
 
   return (
-    <Box
-      sx={{
-        marginLeft: '80px',
-        marginTop: '40px',
-      }}>
-      <Stack direction="row" spacing={5} style={{ marginBottom: '30px' }}>
-        {numberInputs.map((props, index) => (
-          <NumberInput key={index} {...props} />
-        ))}
-      </Stack>
-    </Box>
+    <Stack direction="column" spacing={5} style={{ marginBottom: '30px' }}>
+      {numberInputs.map((props, index) => (
+        <NumberInput key={index} {...props} />
+      ))}
+    </Stack>
   )
 }
 
