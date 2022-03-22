@@ -14,7 +14,9 @@ const NumberInput = ({ label, maxValue, value: initialValue, submitValue }: Numb
   const minValue = 0
 
   const onTextChange: InputBaseProps['onChange'] = event => {
-    setInputValue(parseInt(event.target.value))
+    const parsedValue = parseInt(event.target.value)
+    const value = isNaN(parsedValue) ? minValue : parsedValue
+    setInputValue(value)
   }
 
   const onKeyPress: InputBaseProps['onKeyPress'] = event => {
