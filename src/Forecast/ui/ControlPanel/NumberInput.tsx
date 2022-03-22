@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { OutlinedInputProps, TextField } from '@mui/material'
+import { Input, InputBaseProps, TextField } from '@mui/material'
 
 export interface NumberInputProps {
-  label: string
   value: number
   submitValue: (value: number) => void
   maxValue: number
+  label?: string
 }
 
 const NumberInput = ({ label, maxValue, value: initialValue, submitValue }: NumberInputProps) => {
@@ -13,8 +13,14 @@ const NumberInput = ({ label, maxValue, value: initialValue, submitValue }: Numb
 
   const minValue = 0
 
-  const onTextChange: OutlinedInputProps['onChange'] = event => {
+  const onTextChange: InputBaseProps['onChange'] = event => {
     setInputValue(parseInt(event.target.value))
+  }
+
+  const onKeyPress: InputBaseProps['onKeyPress'] = event => {
+    if (event.key === 'Enter') {
+      submitIfValid()
+    }
   }
 
   const submitIfValid = () => {
@@ -22,28 +28,38 @@ const NumberInput = ({ label, maxValue, value: initialValue, submitValue }: Numb
     submitValue(inputValue)
   }
 
-  return (
-    <TextField
-      value={inputValue}
-      style={{
-        width: '150px',
-      }}
-      onChange={onTextChange}
-      onKeyPress={event => {
-        if (event.key === 'Enter') {
-          submitIfValid()
-        }
-      }}
-      label={label}
-      onBlur={submitIfValid}
-      inputProps={{
-        type: 'number',
-        variant: 'standard',
-        min: minValue,
-        max: maxValue,
-      }}
-    />
-  )
+  if (label) {
+    return (
+      <TextField
+        label={label}
+        value={inputValue}
+        onChange={onTextChange}
+        onKeyPress={onKeyPress}
+        onBlur={submitIfValid}
+        style={{
+          width: '150px',
+        }}
+        inputProps={{
+          type: 'number',
+          variant: 'standard',
+          min: minValue,
+          max: maxValue,
+        }}
+      />
+    )
+  } else {
+    return (
+      <Input
+        value={inputValue}
+        onChange={onTextChange}
+        onKeyPress={onKeyPress}
+        onBlur={submitIfValid}
+        style={{
+          width: '50px',
+        }}
+      />
+    )
+  }
 }
 
 export default NumberInput

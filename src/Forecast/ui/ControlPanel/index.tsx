@@ -1,12 +1,14 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useReducer } from 'react'
 import { Stack } from '@mui/material'
 import { ForecastProps } from '../../logic/generateForecast'
 import {
   defaultAnkiConfig,
   defaultStartingSummary,
-  makeWeekConfigByRepeating,
+  defaultWeekConfig,
 } from '../../logic/generateForecast/forecastHelpers'
 import NumberInput, { NumberInputProps } from './NumberInput'
+import WeekConfigPanel, { WeekConfigType } from './WeekConfigPanel'
+import { weekConfigReducer } from './WeekConfigReducer'
 
 interface ControlPanelProps {
   onUpdateChart: (forecastProps: ForecastProps) => void
@@ -15,20 +17,19 @@ interface ControlPanelProps {
 const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Element => {
   const [forecastLength, setForecastLength] = useState<number>(180)
   const [numberOfCards, setNumberOfCards] = useState<number>(1000)
-  const [newPerDay, setNewPerDay] = useState<number>(20)
-  const [maxReviews, setMaxReviews] = useState<number>(200)
+
+  const [weekConfigState, dispatchWeekConfigAction] = useReducer(weekConfigReducer, {
+    selectedType: WeekConfigType.Basic,
+    basic: defaultWeekConfig,
+    dayOfWeek: defaultWeekConfig,
+  })
+
+  const useBasic = weekConfigState.selectedType === WeekConfigType.Basic
+  const weekConfig = useBasic ? weekConfigState.basic : weekConfigState.dayOfWeek
 
   const startingSummary = useMemo(
     () => defaultStartingSummary({ deckSize: numberOfCards }),
     [numberOfCards]
-  )
-  const weekConfig = useMemo(
-    () =>
-      makeWeekConfigByRepeating({
-        newCards: newPerDay,
-        maxReviews,
-      }),
-    [newPerDay, maxReviews]
   )
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
       startingSummary,
       forecastLength,
       ankiConfig: defaultAnkiConfig,
-      weekConfig: weekConfig,
+      weekConfig,
     })
   }, [onUpdate, startingSummary, forecastLength, weekConfig])
 
@@ -53,18 +54,6 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
       submitValue: setNumberOfCards,
       maxValue: 100_000,
     },
-    {
-      label: 'New per day',
-      value: newPerDay,
-      submitValue: setNewPerDay,
-      maxValue: 200,
-    },
-    {
-      label: 'Max reviews per day',
-      value: maxReviews,
-      submitValue: setMaxReviews,
-      maxValue: 1000,
-    },
   ]
 
   return (
@@ -72,6 +61,7 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
       {numberInputs.map((props, index) => (
         <NumberInput key={index} {...props} />
       ))}
+      <WeekConfigPanel state={weekConfigState} dispatch={dispatchWeekConfigAction} />
     </Stack>
   )
 }
