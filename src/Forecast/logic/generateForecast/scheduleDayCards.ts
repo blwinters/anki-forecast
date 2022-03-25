@@ -72,7 +72,7 @@ interface ScheduleReviewsProps {
   ankiConfig: AnkiConfig
 }
 
-const scheduleReviewCards = ({
+export const scheduleReviewCards = ({
   reviewCards,
   cardsByDay,
   dayIndex,

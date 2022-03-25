@@ -1,12 +1,10 @@
 import { DayCards } from '../DayCards'
 import { defaultAnkiConfig, makeNewCardArray, makeCardArray } from '../forecastHelpers'
-import { scheduleDayCards } from '../scheduleDayCards'
+import { scheduleDayCards, scheduleReviewCards } from '../scheduleDayCards'
 import { getDayCards } from '../getDayCards'
 import { AnkiConfig, CardStatus, DayCardsMap, DayConfig } from '../types'
 
 describe('scheduleDayCards', () => {
-  const youngCardCount = 20
-  const matureCardCount = 10
   let dayIndex: number
   let cardsByDay: DayCardsMap
   let dayCards: DayCards
@@ -57,13 +55,24 @@ describe('scheduleDayCards', () => {
     expect(todayCards).toHaveLength(0)
     expect(graduatedDayCards).toHaveLength(dayConfig.newCards)
   })
+})
+
+describe('scheduleReviewCards', () => {
+  const youngCardCount = 20
+  const matureCardCount = 10
+
+  let dayIndex: number
+  let cardsByDay: DayCardsMap
+  let ankiConfig: AnkiConfig
+
+  beforeEach(() => {
+    dayIndex = 0
+    ankiConfig = defaultAnkiConfig
+    cardsByDay = new Map()
+  })
 
   it('schedules young and mature cards with goodMultiplier', () => {
     dayIndex = 2
-    dayConfig = {
-      newCards: 0, //no new cards for this test
-      maxReviews: 200,
-    }
     ankiConfig = {
       ...defaultAnkiConfig,
       reviewAccuracy: 1,
@@ -87,10 +96,7 @@ describe('scheduleDayCards', () => {
 
     cardsByDay.set(dayIndex, allCardsForToday)
 
-    populateDayCards()
-    const cardStatusDiff = scheduleDayCards({ dayIndex, dayCards, cardsByDay, ankiConfig })
-    expect(cardStatusDiff.young).toBe(-10)
-    expect(cardStatusDiff.mature).toBe(10)
+    scheduleReviewCards({ reviewCards: allCardsForToday, dayIndex, cardsByDay, ankiConfig })
 
     const expectedYoungIndexA = 5
     const expectedYoungIndexB = 26
