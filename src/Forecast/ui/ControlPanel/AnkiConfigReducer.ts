@@ -4,7 +4,7 @@ interface BaseAction {
   type: string
 }
 
-export type AnkiConfigActionType = 'SET_MAX_INTERVAL' | ''
+export type AnkiConfigActionType = 'SET_MAX_INTERVAL' | 'SET_GRADUATING_INTERVAL'
 
 interface SetMaxIntervalAction extends BaseAction {
   type: AnkiConfigActionType
@@ -24,6 +24,15 @@ export const ankiConfigReducer = (state: AnkiConfig, action: AnkiConfigAction): 
         maxInterval: value,
       }
     }
+
+    case 'SET_GRADUATING_INTERVAL': {
+      const { value } = action.payload
+      return {
+        ...state,
+        graduatingInterval: value,
+      }
+    }
+
     default:
       return state
   }

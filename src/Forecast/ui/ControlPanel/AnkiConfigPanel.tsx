@@ -13,6 +13,12 @@ interface PanelProps {
 const AnkiConfigPanel = ({ state, dispatch }: PanelProps) => {
   const inputProps: MapperProps[] = [
     {
+      label: 'Graduating Interval',
+      value: state.graduatingInterval,
+      actionType: 'SET_GRADUATING_INTERVAL',
+      dispatch,
+    },
+    {
       label: 'Max Interval',
       value: state.maxInterval,
       actionType: 'SET_MAX_INTERVAL',
