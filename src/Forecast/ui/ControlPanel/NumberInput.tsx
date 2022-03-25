@@ -9,13 +9,17 @@ export interface NumberInputProps {
 }
 
 const NumberInput = ({ label, maxValue, value: initialValue, submitValue }: NumberInputProps) => {
-  const [inputValue, setInputValue] = useState<number>(initialValue)
+  const [inputValue, setInputValue] = useState<number | undefined>(initialValue)
 
   const minValue = 0
 
   const onTextChange: InputBaseProps['onChange'] = event => {
+    if (event.target.value === '') {
+      setInputValue(undefined)
+      return
+    }
     const parsedValue = parseInt(event.target.value)
-    const value = isNaN(parsedValue) ? minValue : parsedValue
+    const value = isNaN(parsedValue) ? initialValue : parsedValue
     setInputValue(value)
   }
 
@@ -26,8 +30,12 @@ const NumberInput = ({ label, maxValue, value: initialValue, submitValue }: Numb
   }
 
   const submitIfValid = () => {
-    //TODO: validate the value and show helper text if needed
-    submitValue(inputValue)
+    if (inputValue !== undefined) {
+      //TODO: validate the value and show helper text if needed
+      submitValue(inputValue)
+    } else {
+      setInputValue(initialValue)
+    }
   }
 
   if (label) {
