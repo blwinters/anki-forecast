@@ -53,7 +53,7 @@ const Chart = ({ data }: ChartProps) => {
           orientation="right"
           stroke={theme.totalLearned}
         />
-        <Tooltip />
+        <Tooltip labelFormatter={label => `Day ${label as string}`} />
         <Legend />
         <Area
           yAxisId="right"
