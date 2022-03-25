@@ -78,12 +78,13 @@ export const scheduleReviewCards = ({
   dayIndex,
   ankiConfig,
 }: ScheduleReviewsProps) => {
-  const { goodMultiplier } = ankiConfig
+  const { goodMultiplier, maxInterval } = ankiConfig
   let maturationCount = 0
 
   reviewCards.forEach(card => {
     const newInterval = Math.round(card.latestInterval * goodMultiplier)
-    const newIndex = dayIndex + newInterval
+    const validatedNewInterval = Math.min(newInterval, maxInterval)
+    const newIndex = dayIndex + validatedNewInterval
     if (card.latestInterval < matureCardThreshold && newInterval >= matureCardThreshold) {
       maturationCount += 1
     }

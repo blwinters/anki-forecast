@@ -114,4 +114,22 @@ describe('scheduleReviewCards', () => {
     expect(matureDayCardsB).toHaveLength(5)
   })
 
+  it('applies maxInterval', () => {
+    const latestInterval = 20
+    const maxInterval = 30
+    ankiConfig.maxInterval = maxInterval
+
+    const todayCards = makeCardArray(CardStatus.young, 10, latestInterval)
+    const todayCardIds = todayCards.map(card => card.id)
+
+    cardsByDay.set(dayIndex, todayCards)
+
+    scheduleReviewCards({ reviewCards: todayCards, cardsByDay, dayIndex, ankiConfig })
+
+    const expectedNextIndex = dayIndex + maxInterval
+    const cardsAtExpectedNextIndex = cardsByDay.get(expectedNextIndex) ?? []
+    const nextIndexCardIds = cardsAtExpectedNextIndex.map(card => card.id)
+
+    expect(nextIndexCardIds).toEqual(todayCardIds)
+  })
 })
