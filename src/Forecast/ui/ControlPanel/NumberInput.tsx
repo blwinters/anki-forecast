@@ -18,7 +18,7 @@ const NumberInput = ({ label, maxValue, value: initialValue, submitValue }: Numb
       setInputValue(undefined)
       return
     }
-    const parsedValue = parseInt(event.target.value)
+    const parsedValue = Number(event.target.value)
     const value = isNaN(parsedValue) ? initialValue : parsedValue
     setInputValue(value)
   }

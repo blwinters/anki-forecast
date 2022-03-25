@@ -24,6 +24,12 @@ const AnkiConfigPanel = ({ state, dispatch }: PanelProps) => {
       actionType: 'SET_MAX_INTERVAL',
       dispatch,
     },
+    {
+      label: 'Starting Ease',
+      value: state.goodMultiplier,
+      actionType: 'SET_GOOD_MULTIPLIER',
+      dispatch,
+    },
   ]
 
   return <Stack spacing={layout.stackSpacing}>{inputProps.map(mapPropsToNumberInput)}</Stack>
