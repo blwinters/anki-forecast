@@ -11,6 +11,7 @@ import WeekConfigPanel, { WeekConfigType } from './WeekConfigPanel'
 import { weekConfigReducer } from './WeekConfigReducer'
 import AnkiConfigPanel from './AnkiConfigPanel'
 import { ankiConfigReducer } from './AnkiConfigReducer'
+import { layout } from '../styles'
 
 interface ControlPanelProps {
   onUpdateChart: (forecastProps: ForecastProps) => void
@@ -64,7 +65,7 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
   ]
 
   return (
-    <Stack direction="column" spacing={5} style={{ marginBottom: '30px' }}>
+    <Stack direction="column" spacing={layout.stackSpacing} style={{ marginBottom: '30px' }}>
       {numberInputs.map((props, index) => (
         <NumberInput key={index} {...props} />
       ))}

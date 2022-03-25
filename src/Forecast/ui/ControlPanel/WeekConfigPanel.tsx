@@ -1,6 +1,7 @@
 import { Box, Grid, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React from 'react'
 import { DayConfig, DayOfWeekIndex } from '../../logic/generateForecast/types'
+import { layout } from '../styles'
 import NumberInput, { NumberInputProps } from './NumberInput'
 import { WeekConfigAction, WeekConfigState } from './WeekConfigReducer'
 
@@ -100,7 +101,7 @@ const BasicWeekConfig = ({ state, dispatch }: Props) => {
   ]
 
   return (
-    <Stack direction="column" spacing={5} style={{ marginBottom: '30px' }}>
+    <Stack direction="column" spacing={layout.stackSpacing} style={{ marginBottom: '30px' }}>
       {numberInputs.map((props, index) => (
         <NumberInput key={index} {...props} />
       ))}

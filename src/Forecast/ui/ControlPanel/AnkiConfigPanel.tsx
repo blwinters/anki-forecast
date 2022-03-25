@@ -3,6 +3,7 @@ import { Stack } from '@mui/material'
 import { AnkiConfig } from '../../logic/generateForecast/types'
 import { AnkiConfigAction, AnkiConfigActionType } from './AnkiConfigReducer'
 import NumberInput from './NumberInput'
+import { layout } from '../styles'
 
 interface PanelProps {
   state: AnkiConfig
@@ -19,7 +20,7 @@ const AnkiConfigPanel = ({ state, dispatch }: PanelProps) => {
     },
   ]
 
-  return <Stack>{inputProps.map(mapPropsToNumberInput)}</Stack>
+  return <Stack spacing={layout.stackSpacing}>{inputProps.map(mapPropsToNumberInput)}</Stack>
 }
 
 interface MapperProps {
