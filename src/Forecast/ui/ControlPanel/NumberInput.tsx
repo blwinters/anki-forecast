@@ -4,7 +4,7 @@ import { Input, InputBaseProps, TextField } from '@mui/material'
 export interface NumberInputProps {
   value: number
   submitValue: (value: number) => void
-  maxValue: number
+  maxValue?: number
   label?: string
 }
 

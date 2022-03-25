@@ -9,6 +9,8 @@ import {
 import NumberInput, { NumberInputProps } from './NumberInput'
 import WeekConfigPanel, { WeekConfigType } from './WeekConfigPanel'
 import { weekConfigReducer } from './WeekConfigReducer'
+import AnkiConfigPanel from './AnkiConfigPanel'
+import { ankiConfigReducer } from './AnkiConfigReducer'
 
 interface ControlPanelProps {
   onUpdateChart: (forecastProps: ForecastProps) => void
@@ -24,6 +26,11 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
     dayOfWeek: defaultWeekConfig,
   })
 
+  const [ankiConfigState, dispatchAnkiConfigAction] = useReducer(
+    ankiConfigReducer,
+    defaultAnkiConfig
+  )
+
   const useBasic = weekConfigState.selectedType === WeekConfigType.Basic
   const weekConfig = useBasic ? weekConfigState.basic : weekConfigState.dayOfWeek
 
@@ -36,10 +43,10 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
     onUpdate({
       startingSummary,
       forecastLength,
-      ankiConfig: defaultAnkiConfig,
+      ankiConfig: ankiConfigState,
       weekConfig,
     })
-  }, [onUpdate, startingSummary, forecastLength, weekConfig])
+  }, [onUpdate, startingSummary, forecastLength, ankiConfigState, weekConfig])
 
   const numberInputs: NumberInputProps[] = [
     {
@@ -62,6 +69,7 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
         <NumberInput key={index} {...props} />
       ))}
       <WeekConfigPanel state={weekConfigState} dispatch={dispatchWeekConfigAction} />
+      <AnkiConfigPanel state={ankiConfigState} dispatch={dispatchAnkiConfigAction} />
     </Stack>
   )
 }
