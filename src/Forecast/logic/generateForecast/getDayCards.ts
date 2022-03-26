@@ -1,13 +1,14 @@
-import type { DayConfig, DayCardsMap, CardInfo } from './types'
+import type { DayConfig, DayCardsMap } from './types'
 import { CardStatus } from './types'
 import { DayCards, DayCardArrays } from './DayCards'
 import { matureCardThreshold } from './forecastHelpers'
+import { Card } from './models/Card'
 
 export interface ReviewCountProps {
   dayIndex: number
   dayConfig: DayConfig
   cardsByDay: DayCardsMap
-  newCardsRemaining: CardInfo[]
+  newCardsRemaining: Card[]
 }
 
 export const getDayCards = (cardCountProps: ReviewCountProps): DayCards => {
@@ -29,8 +30,8 @@ export const getDayCards = (cardCountProps: ReviewCountProps): DayCards => {
 const startingReviewsForStatus = (
   status: CardStatus,
   { dayIndex, dayConfig, cardsByDay, newCardsRemaining }: ReviewCountProps
-): CardInfo[] => {
-  const dueCards = cardsByDay.get(dayIndex) ?? []
+): Card[] => {
+  const dueCards: Card[] = cardsByDay.get(dayIndex) ?? []
 
   switch (status) {
     case CardStatus.new:
@@ -60,7 +61,7 @@ const cardsRespectingMaxReviews = (
     mature: [],
   }
 
-  const sliceFittingAvailableSpace = (cards: CardInfo[]): CardInfo[] => {
+  const sliceFittingAvailableSpace = (cards: Card[]): Card[] => {
     const currentTotal = revised.newCards.length + revised.young.length + revised.mature.length
 
     const availableSpace = maxReviews - currentTotal

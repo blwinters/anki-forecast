@@ -1,6 +1,7 @@
 import { DayCards } from './DayCards'
 import { matureCardThreshold } from './forecastHelpers'
-import type { AnkiConfig, CardInfo, CardStatusDiff, DayCardsMap } from './types'
+import type { AnkiConfig, CardStatusDiff, DayCardsMap } from './types'
+import type { Card } from './models/Card'
 
 interface Props {
   cardsByDay: DayCardsMap //mutated in place with new day indices for each reviewed card
@@ -44,7 +45,7 @@ export const scheduleDayCards = ({
 }
 
 interface ScheduleNewProps {
-  newCards: CardInfo[]
+  newCards: Card[]
   cardsByDay: DayCardsMap
   dayIndex: number
   afterInterval: number
@@ -56,7 +57,7 @@ const scheduleNewCards = ({
   dayIndex,
   afterInterval: interval,
 }: ScheduleNewProps) => {
-  const updatedNewCards: CardInfo[] = newCards.map(card => ({
+  const updatedNewCards: Card[] = newCards.map(card => ({
     id: card.id,
     latestInterval: interval,
   }))
@@ -66,7 +67,7 @@ const scheduleNewCards = ({
 }
 
 interface ScheduleReviewsProps {
-  reviewCards: CardInfo[]
+  reviewCards: Card[]
   cardsByDay: DayCardsMap
   dayIndex: number
   ankiConfig: AnkiConfig
@@ -89,7 +90,7 @@ export const scheduleReviewCards = ({
       maturationCount += 1
     }
 
-    const newCard: CardInfo = {
+    const newCard: Card = {
       id: card.id,
       latestInterval: newInterval,
     }
@@ -102,7 +103,7 @@ export const scheduleReviewCards = ({
   }
 }
 
-const appendToCardsByDayAtIndex = (cardsByDay: DayCardsMap, index: number, cards: CardInfo[]) => {
+const appendToCardsByDayAtIndex = (cardsByDay: DayCardsMap, index: number, cards: Card[]) => {
   const existingAtIndex = cardsByDay.get(index) ?? []
   const combined = existingAtIndex.concat(cards)
   cardsByDay.set(index, combined)

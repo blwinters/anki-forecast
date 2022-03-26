@@ -1,3 +1,4 @@
+import type { Card } from './models/Card'
 export interface AnkiConfig {
   reviewAccuracy: number
   graduatingInterval: number
@@ -45,12 +46,7 @@ export interface CardStatusDiff {
 }
 
 export type DaySummaryMap = Map<number, DaySummary>
-export type DayCardsMap = Map<number, CardInfo[]>
-
-export interface CardInfo {
-  id: number
-  latestInterval: number
-}
+export type DayCardsMap = Map<number, Card[]>
 
 // 0 = Monday
 export type DayOfWeekIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6

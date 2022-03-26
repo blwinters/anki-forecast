@@ -5,7 +5,6 @@ import type {
   DayConfig,
   WeekConfig,
   DaySummary,
-  CardInfo,
   CardStatusDiff,
   DaySummaryEndCounts,
   DaySummaryReviews,
@@ -13,10 +12,11 @@ import type {
 import { getDayCards } from './getDayCards'
 import { makeNewCardArray } from './forecastHelpers'
 import { scheduleDayCards } from './scheduleDayCards'
+import type { Card } from './models/Card'
 
 export type DaySummaryAccumulator = {
   summariesByDay: DaySummaryMap
-  newCardsRemaining: CardInfo[]
+  newCardsRemaining: Card[]
   cardsByDay: DayCardsMap
   ankiConfig: AnkiConfig
   weekConfig: WeekConfig

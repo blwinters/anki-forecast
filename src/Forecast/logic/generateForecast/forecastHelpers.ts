@@ -1,5 +1,6 @@
-import type { DaySummary, DayConfig, WeekConfig, AnkiConfig, CardInfo } from './types'
+import { DaySummary, DayConfig, WeekConfig, AnkiConfig } from './types'
 import { CardStatus } from './types'
+import { Card } from './models/Card'
 
 export const makeWeekConfigByRepeating = (dayConfig: DayConfig): WeekConfig => {
   return Array.from({ length: 7 }, () => dayConfig)
@@ -47,12 +48,12 @@ export const makeCardArray = (
   status: CardStatus,
   length: number,
   latestInterval?: number
-): CardInfo[] => {
+): Card[] => {
   const baseArray = Array.from({ length: length }, () => null)
-  return baseArray.map((_, index) => ({
-    id: index,
-    latestInterval: latestInterval ?? testingIntervalForIndex(index, status),
-  }))
+  return baseArray.map((_, index) => {
+    const lastInterval = latestInterval ?? testingIntervalForIndex(index, status)
+    return new Card(lastInterval)
+  })
 }
 
 const testingIntervalForIndex = (

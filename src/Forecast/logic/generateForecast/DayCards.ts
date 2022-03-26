@@ -1,4 +1,5 @@
-import type { CardInfo, DaySummaryReviews } from './types'
+import { Card } from './models/Card'
+import type { DaySummaryReviews } from './types'
 
 export interface DayCardCounts {
   newCards: number
@@ -8,9 +9,15 @@ export interface DayCardCounts {
 }
 
 export interface DayCardArrays {
-  newCards: CardInfo[]
-  young: CardInfo[]
-  mature: CardInfo[]
+  newCards: Card[]
+  young: Card[]
+  mature: Card[]
+}
+
+interface CardIdArrays {
+  newIds: string[]
+  youngIds: string[]
+  matureIds: string[]
 }
 
 export class DayCards {
@@ -24,7 +31,7 @@ export class DayCards {
     return this.cardArrays
   }
 
-  getCardIdsByStatus() {
+  getCardIdsByStatus(): CardIdArrays {
     return {
       newIds: this.cardArrays.newCards.map(card => card.id),
       youngIds: this.cardArrays.young.map(card => card.id),
