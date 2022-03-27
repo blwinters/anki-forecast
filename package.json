@@ -51,6 +51,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
+    "test:cov": "react-scripts test --coverage",
+    "test:cov-all": "react-scripts test --coverage .",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -64,5 +66,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "coverageThreshold": {
+      "./src/Forecast/logic": {
+        "branches": 80,
+        "statements": 80,
+        "functions": 80
+      }
+    }
   }
 }
