@@ -18,6 +18,7 @@ export const defaultBasicConfig: BasicConfig = {
 export const defaultWeekConfig: WeekConfig = makeWeekConfigByRepeating(defaultDayConfig)
 
 export const matureCardThreshold = 21
+export const daysPerMonth = 30
 
 export const defaultAnkiConfig: AnkiConfig = {
   reviewAccuracy: 0.9,
@@ -76,4 +77,20 @@ const testingIntervalForIndex = (
     default:
       return 0
   }
+}
+
+export const getSkippedDayIndices = (skipsPerMonth: number, forecastLength: number): number[] => {
+  if (skipsPerMonth <= 0) {
+    return []
+  }
+
+  const totalSkips = Math.floor((forecastLength / daysPerMonth) * skipsPerMonth)
+  const interval = Math.floor(forecastLength / totalSkips)
+  const initialOffset = Math.floor(interval / 2) - 1 //zero-based array
+
+  const skippedDayIndices = Array.from({ length: totalSkips }).map((_, i) => {
+    return i * interval + initialOffset
+  })
+
+  return skippedDayIndices
 }

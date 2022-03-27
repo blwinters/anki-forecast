@@ -46,6 +46,7 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
     onUpdate({
       startingSummary,
       forecastLength,
+      skippedDaysPerMonth: 0,
       ankiConfig: ankiConfigState,
       weekConfig,
     })

@@ -4,10 +4,12 @@ import {
   daySummaryReducerDefaultValue,
   emptyDaySummary,
 } from './daySummaryReducer'
+import { getSkippedDayIndices } from './forecastHelpers'
 
 export interface ForecastProps {
   startingSummary: DaySummary
   forecastLength: number
+  skippedDaysPerMonth: number
   ankiConfig: AnkiConfig
   weekConfig: WeekConfig
 }
@@ -15,10 +17,11 @@ export interface ForecastProps {
 export const generateForecast = ({
   startingSummary,
   forecastLength,
+  skippedDaysPerMonth,
   ankiConfig,
   weekConfig,
 }: ForecastProps): DaySummary[] => {
-  const skippedDayIndices: number[] = []
+  const skippedDayIndices = getSkippedDayIndices(skippedDaysPerMonth, forecastLength)
   const reducerDefaultValue = daySummaryReducerDefaultValue({
     startingSummary,
     skippedDayIndices,

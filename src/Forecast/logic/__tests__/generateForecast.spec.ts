@@ -11,6 +11,7 @@ describe('generateForecast', () => {
       ankiConfig: defaultAnkiConfig,
       weekConfig: defaultWeekConfig,
       forecastLength,
+      skippedDaysPerMonth: 0,
     })
 
     expect(actual).toHaveLength(forecastLength)
@@ -35,6 +36,7 @@ describe('generateForecast', () => {
         ankiConfig: defaultAnkiConfig,
         weekConfig,
         forecastLength,
+        skippedDaysPerMonth: 0,
       })
 
       const actual: number[] = forecast.map(daySummary => daySummary.reviews.new)
