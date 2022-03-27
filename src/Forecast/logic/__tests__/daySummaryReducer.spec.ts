@@ -2,9 +2,11 @@ import {
   daySummaryReducer,
   daySummaryReducerDefaultValue,
   emptyDaySummary,
+  emptyEndCounts,
+  getPreviousEndCounts,
 } from '../daySummaryReducer'
 import { defaultAnkiConfig, makeWeekConfigByRepeating } from '../forecastHelpers'
-import { DaySummary } from '../types'
+import { DaySummary, DaySummaryMap } from '../types'
 
 describe('daySummaryReducer', () => {
   it('removes new cards from cards remaining', () => {
@@ -29,5 +31,16 @@ describe('daySummaryReducer', () => {
     daySummaryReducer(accumulator, null, 0)
 
     expect(accumulator.newCardsRemaining).toHaveLength(275)
+  })
+})
+
+describe('getPreviousEndCounts', () => {
+  it('returns emptyEndCounts for index without summary', () => {
+    const summariesByDay: DaySummaryMap = new Map()
+    const dayIndex = 1
+    expect(summariesByDay.get(dayIndex)).toBeUndefined()
+
+    const actual = getPreviousEndCounts(summariesByDay, dayIndex)
+    expect(actual).toEqual(emptyEndCounts)
   })
 })

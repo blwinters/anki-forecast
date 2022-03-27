@@ -48,7 +48,7 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
   acc.newCardsRemaining = tomorrowNewCardsRemaining
 
   const cardStatusDiff = scheduleDayCards({ dayIndex, dayCards, cardsByDay, ankiConfig })
-  const previousEndCounts = summariesByDay.get(dayIndex - 1)?.endCounts ?? emptyEndCounts
+  const previousEndCounts = getPreviousEndCounts(summariesByDay, dayIndex)
 
   const daySummary: DaySummary = {
     reviews: dayCards.getDaySummaryReviews(dayConfig.maxReviews),
@@ -57,6 +57,13 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
 
   acc.summariesByDay.set(dayIndex, daySummary)
   return acc
+}
+
+export const getPreviousEndCounts = (
+  summariesByDay: DaySummaryMap,
+  dayIndex: number
+): DaySummaryEndCounts => {
+  return summariesByDay.get(dayIndex - 1)?.endCounts ?? emptyEndCounts
 }
 
 interface EndCountProps {
@@ -99,7 +106,7 @@ const emptyReviews: DaySummaryReviews = {
   max: 0,
 }
 
-const emptyEndCounts: DaySummaryEndCounts = {
+export const emptyEndCounts: DaySummaryEndCounts = {
   young: 0,
   mature: 0,
   totalActive: 0,

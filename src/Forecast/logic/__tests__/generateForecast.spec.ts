@@ -1,6 +1,7 @@
-import type { WeekConfig, DayConfig } from '../types'
+import type { WeekConfig, DayConfig, DaySummaryMap } from '../types'
 import { defaultAnkiConfig, defaultWeekConfig, defaultStartingSummary } from '../forecastHelpers'
-import { generateForecast } from '../generateForecast'
+import { dayIndicesMapper, generateForecast } from '../generateForecast'
+import { emptyDaySummary } from '../daySummaryReducer'
 
 describe('generateForecast', () => {
   it('returns array matching forecastLength', () => {
@@ -65,5 +66,16 @@ describe('generateForecast', () => {
       expect(actual).toEqual(expected)
       expect(actual).toHaveLength(forecastLength)
     })
+  })
+})
+
+describe('dayIndicesMapper', () => {
+  it('returns empty summary if no summary for index', () => {
+    const dayIndex = 1
+    const summariesByDay: DaySummaryMap = new Map()
+    expect(summariesByDay.get(dayIndex)).toBeUndefined()
+
+    const actual = dayIndicesMapper(dayIndex, summariesByDay)
+    expect(actual).toEqual(emptyDaySummary)
   })
 })
