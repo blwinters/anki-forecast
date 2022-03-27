@@ -7,7 +7,7 @@ export interface BasicConfigAction {
   }
 }
 
-type BasicActionType = 'SET_DECK_SIZE' | 'SET_FORECAST_LENGTH'
+type BasicActionType = 'SET_DECK_SIZE' | 'SET_FORECAST_LENGTH' | 'SET_SKIPS_PER_MONTH'
 
 export const basicConfigReducer = (state: BasicConfig, action: BasicConfigAction): BasicConfig => {
   switch (action.type) {
@@ -21,6 +21,12 @@ export const basicConfigReducer = (state: BasicConfig, action: BasicConfigAction
       return {
         ...state,
         forecastLength: action.payload.value,
+      }
+
+    case 'SET_SKIPS_PER_MONTH':
+      return {
+        ...state,
+        skipsPerMonth: action.payload.value,
       }
 
     default:

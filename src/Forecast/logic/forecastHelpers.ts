@@ -13,6 +13,7 @@ export const defaultDayConfig: DayConfig = {
 export const defaultBasicConfig: BasicConfig = {
   deckSize: 1000,
   forecastLength: 180,
+  skipsPerMonth: 0,
 }
 
 export const defaultWeekConfig: WeekConfig = makeWeekConfigByRepeating(defaultDayConfig)

@@ -3,6 +3,7 @@ import type { Card } from './models/Card'
 export interface BasicConfig {
   deckSize: number
   forecastLength: number
+  skipsPerMonth: number
 }
 
 export interface AnkiConfig {

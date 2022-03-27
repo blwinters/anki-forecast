@@ -27,6 +27,15 @@ export const BasicConfigPanel = ({ state, dispatch }: Props) => {
     })
   }
 
+  const setSkipsPerMonth = (value: number) => {
+    dispatch({
+      type: 'SET_SKIPS_PER_MONTH',
+      payload: {
+        value,
+      },
+    })
+  }
+
   const numberInputs: NumberInputProps[] = [
     {
       label: '# of days',
@@ -39,6 +48,12 @@ export const BasicConfigPanel = ({ state, dispatch }: Props) => {
       value: state.deckSize,
       submitValue: setDeckSize,
       maxValue: 100_000,
+    },
+    {
+      label: 'Skip days per month',
+      value: state.skipsPerMonth,
+      submitValue: setSkipsPerMonth,
+      maxValue: 15,
     },
   ]
 

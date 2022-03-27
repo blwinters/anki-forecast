@@ -36,7 +36,7 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
     defaultAnkiConfig
   )
 
-  const { deckSize, forecastLength } = basicConfigState
+  const { deckSize, forecastLength, skipsPerMonth } = basicConfigState
   const useBasicWeek = weekConfigState.selectedType === WeekConfigType.Basic
   const weekConfig = useBasicWeek ? weekConfigState.basic : weekConfigState.dayOfWeek
 
@@ -46,11 +46,11 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
     onUpdate({
       startingSummary,
       forecastLength,
-      skippedDaysPerMonth: 0,
+      skippedDaysPerMonth: skipsPerMonth,
       ankiConfig: ankiConfigState,
       weekConfig,
     })
-  }, [onUpdate, startingSummary, forecastLength, ankiConfigState, weekConfig])
+  }, [onUpdate, startingSummary, forecastLength, skipsPerMonth, ankiConfigState, weekConfig])
 
   return (
     <Stack direction="column" spacing={layout.stackSpacing}>
