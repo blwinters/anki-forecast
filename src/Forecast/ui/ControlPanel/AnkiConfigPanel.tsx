@@ -1,4 +1,6 @@
-import { Stack } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from '@mui/material'
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material'
+
 import { AnkiConfig } from '../../logic'
 import { AnkiConfigAction, AnkiConfigActionType } from './AnkiConfigReducer'
 import NumberInput from './NumberInput'
@@ -31,7 +33,16 @@ const AnkiConfigPanel = ({ state, dispatch }: PanelProps) => {
     },
   ]
 
-  return <Stack spacing={layout.stackSpacing}>{inputProps.map(mapPropsToNumberInput)}</Stack>
+  return (
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography>Anki Settings</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Stack spacing={layout.stackSpacing}>{inputProps.map(mapPropsToNumberInput)}</Stack>
+      </AccordionDetails>
+    </Accordion>
+  )
 }
 
 interface MapperProps {
