@@ -103,7 +103,11 @@ export const scheduleReviewCards = ({
   }
 }
 
-const appendToCardsByDayAtIndex = (cardsByDay: DayCardsMap, index: number, cards: Card[]) => {
+export const appendToCardsByDayAtIndex = (
+  cardsByDay: DayCardsMap,
+  index: number,
+  cards: Card[]
+) => {
   const existingAtIndex = cardsByDay.get(index) ?? []
   const combined = existingAtIndex.concat(cards)
   cardsByDay.set(index, combined)

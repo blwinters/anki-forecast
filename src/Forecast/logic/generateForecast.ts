@@ -18,7 +18,13 @@ export const generateForecast = ({
   ankiConfig,
   weekConfig,
 }: ForecastProps): DaySummary[] => {
-  const reducerDefaultValue = daySummaryReducerDefaultValue(startingSummary, ankiConfig, weekConfig)
+  const skippedDayIndices: number[] = []
+  const reducerDefaultValue = daySummaryReducerDefaultValue({
+    startingSummary,
+    skippedDayIndices,
+    ankiConfig,
+    weekConfig,
+  })
   const arrayOfLength = Array.from({ length: forecastLength }, () => null)
   const summariesByDay: DaySummaryMap = arrayOfLength.reduce(
     daySummaryReducer,

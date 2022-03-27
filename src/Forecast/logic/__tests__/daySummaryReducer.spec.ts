@@ -5,8 +5,13 @@ import {
   emptyEndCounts,
   getPreviousEndCounts,
 } from '../daySummaryReducer'
-import { defaultAnkiConfig, makeWeekConfigByRepeating } from '../forecastHelpers'
-import { DaySummary, DaySummaryMap } from '../types'
+import {
+  defaultAnkiConfig,
+  defaultWeekConfig,
+  makeCardArray,
+  makeWeekConfigByRepeating,
+} from '../forecastHelpers'
+import { CardStatus, DaySummary, DaySummaryMap } from '../types'
 
 describe('daySummaryReducer', () => {
   it('removes new cards from cards remaining', () => {
@@ -22,15 +27,42 @@ describe('daySummaryReducer', () => {
         newRemaining: 300,
       },
     }
-    const accumulator = daySummaryReducerDefaultValue(
+    const accumulator = daySummaryReducerDefaultValue({
       startingSummary,
-      defaultAnkiConfig,
-      weekConfig
-    )
+      ankiConfig: defaultAnkiConfig,
+      skippedDayIndices: [],
+      weekConfig,
+    })
 
     daySummaryReducer(accumulator, null, 0)
 
     expect(accumulator.newCardsRemaining).toHaveLength(275)
+  })
+
+  it('skips skippedDayIndices', () => {
+    const skippedDayIndices = [2, 8, 14, 20]
+    const accumulator = daySummaryReducerDefaultValue({
+      startingSummary: emptyDaySummary,
+      skippedDayIndices,
+      ankiConfig: defaultAnkiConfig,
+      weekConfig: defaultWeekConfig,
+    })
+
+    const dayIndex = 8
+
+    const youngCards = makeCardArray(CardStatus.young, 10)
+    accumulator.cardsByDay.set(dayIndex, youngCards)
+    expect(accumulator.cardsByDay.get(dayIndex)).toEqual(youngCards)
+
+    daySummaryReducer(accumulator, null, dayIndex)
+
+    expect(accumulator.summariesByDay.get(dayIndex)).toEqual(emptyDaySummary)
+
+    const nextDayCards = accumulator.cardsByDay.get(dayIndex + 1) ?? []
+    const nextDayIncludesSkippedCards = youngCards.reduce((acc, card) => {
+      return acc && nextDayCards.includes(card)
+    }, true)
+    expect(nextDayIncludesSkippedCards).toBeTruthy()
   })
 })
 

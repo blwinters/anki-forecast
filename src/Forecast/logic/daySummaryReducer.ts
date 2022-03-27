@@ -11,12 +11,13 @@ import type {
 } from './types'
 import { getDayCards } from './getDayCards'
 import { makeNewCardArray } from './forecastHelpers'
-import { scheduleDayCards } from './scheduleDayCards'
+import { appendToCardsByDayAtIndex, scheduleDayCards } from './scheduleDayCards'
 import type { Card } from './models/Card'
 
 export type DaySummaryAccumulator = {
   summariesByDay: DaySummaryMap
   newCardsRemaining: Card[]
+  skippedDayIndices: number[]
   cardsByDay: DayCardsMap
   ankiConfig: AnkiConfig
   weekConfig: WeekConfig
@@ -29,7 +30,7 @@ type DaySummaryReducer = (
 ) => DaySummaryAccumulator
 
 export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
-  const { ankiConfig, weekConfig, cardsByDay, summariesByDay } = acc
+  const { ankiConfig, weekConfig, cardsByDay, skippedDayIndices, summariesByDay } = acc
 
   const weekdayIndex = dayIndex % 7
   const dayConfig: DayConfig = weekConfig[weekdayIndex]
@@ -40,6 +41,14 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
     cardsByDay,
     newCardsRemaining: acc.newCardsRemaining,
   })
+
+  if (skippedDayIndices.includes(dayIndex)) {
+    acc.summariesByDay.set(dayIndex, emptyDaySummary)
+    const { young, mature } = dayCards.getCardArrays()
+    const skippedReviews = young.concat(mature)
+    appendToCardsByDayAtIndex(acc.cardsByDay, dayIndex + 1, skippedReviews)
+    return acc
+  }
 
   const { newIds: todayNewIds } = dayCards.getCardIdsByStatus()
   const tomorrowNewCardsRemaining = acc.newCardsRemaining.filter(card => {
@@ -81,17 +90,26 @@ const calculateEndCounts = ({
   newRemaining: prevCounts.newRemaining + diff.new,
 })
 
-export const daySummaryReducerDefaultValue = (
-  startingSummary: DaySummary,
-  ankiConfig: AnkiConfig,
+interface DefaultValueProps {
+  startingSummary: DaySummary
+  skippedDayIndices: number[]
+  ankiConfig: AnkiConfig
   weekConfig: WeekConfig
-): DaySummaryAccumulator => {
+}
+
+export const daySummaryReducerDefaultValue = ({
+  startingSummary,
+  skippedDayIndices,
+  ankiConfig,
+  weekConfig,
+}: DefaultValueProps): DaySummaryAccumulator => {
   const initialSummaries: DaySummaryMap = new Map()
   initialSummaries.set(-1, startingSummary)
 
   return {
     summariesByDay: initialSummaries,
     newCardsRemaining: makeNewCardArray(startingSummary.endCounts.newRemaining),
+    skippedDayIndices: skippedDayIndices,
     cardsByDay: new Map(),
     ankiConfig,
     weekConfig,
