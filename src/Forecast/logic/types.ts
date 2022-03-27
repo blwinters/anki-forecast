@@ -1,4 +1,10 @@
 import type { Card } from './models/Card'
+
+export interface BasicConfig {
+  deckSize: number
+  forecastLength: number
+}
+
 export interface AnkiConfig {
   reviewAccuracy: number
   graduatingInterval: number

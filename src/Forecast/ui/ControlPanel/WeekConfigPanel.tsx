@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { Box, Grid, Paper, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { DayConfig, DayOfWeekIndex } from '../../logic'
 import { layout } from '../styles'
 import NumberInput, { NumberInputProps } from './NumberInput'
@@ -31,12 +31,14 @@ const WeekConfigPanel = ({ state, dispatch }: Props) => {
   }
 
   return (
-    <Stack spacing={2}>
-      <Box>Cards Per Day</Box>
-      <WeekConfigTypeToggle value={state.selectedType} onPress={onPressConfigType} />
-      {isBasic && <BasicWeekConfig state={state} dispatch={dispatch} />}
-      {!isBasic && <DayOfWeekConfig state={state} dispatch={dispatch} />}
-    </Stack>
+    <Paper elevation={1} sx={{ padding: 2 }}>
+      <Stack spacing={2}>
+        <Box>Cards Per Day</Box>
+        <WeekConfigTypeToggle value={state.selectedType} onPress={onPressConfigType} />
+        {isBasic && <BasicWeekConfig state={state} dispatch={dispatch} />}
+        {!isBasic && <DayOfWeekConfig state={state} dispatch={dispatch} />}
+      </Stack>
+    </Paper>
   )
 }
 
@@ -100,7 +102,7 @@ const BasicWeekConfig = ({ state, dispatch }: Props) => {
   ]
 
   return (
-    <Stack direction="column" spacing={layout.stackSpacing} style={{ marginBottom: '30px' }}>
+    <Stack direction="column" spacing={layout.stackSpacing}>
       {numberInputs.map((props, index) => (
         <NumberInput key={index} {...props} />
       ))}

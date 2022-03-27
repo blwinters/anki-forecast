@@ -1,4 +1,4 @@
-import { DaySummary, DayConfig, WeekConfig, AnkiConfig, CardStatus } from './types'
+import { DaySummary, DayConfig, WeekConfig, AnkiConfig, CardStatus, BasicConfig } from './types'
 import { Card } from './models/Card'
 
 export const makeWeekConfigByRepeating = (dayConfig: DayConfig): WeekConfig => {
@@ -8,6 +8,11 @@ export const makeWeekConfigByRepeating = (dayConfig: DayConfig): WeekConfig => {
 export const defaultDayConfig: DayConfig = {
   newCards: 20,
   maxReviews: 200,
+}
+
+export const defaultBasicConfig: BasicConfig = {
+  deckSize: 1000,
+  forecastLength: 180,
 }
 
 export const defaultWeekConfig: WeekConfig = makeWeekConfigByRepeating(defaultDayConfig)
