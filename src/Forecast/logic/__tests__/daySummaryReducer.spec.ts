@@ -3,6 +3,7 @@ import {
   daySummaryReducerDefaultValue,
   emptyDaySummary,
   emptyEndCounts,
+  emptyReviews,
   getPreviousEndCounts,
 } from '../daySummaryReducer'
 import {
@@ -40,27 +41,48 @@ describe('daySummaryReducer', () => {
   })
 
   it('skips skippedDayIndices', () => {
+    const dayIndex = 8
     const skippedDayIndices = [2, 8, 14, 20]
-    const accumulator = daySummaryReducerDefaultValue({
+    const acc = daySummaryReducerDefaultValue({
       startingSummary: emptyDaySummary,
       skippedDayIndices,
       ankiConfig: defaultAnkiConfig,
       weekConfig: defaultWeekConfig,
     })
 
-    const dayIndex = 8
+    const previousDaySummary: DaySummary = {
+      reviews: {
+        new: 10,
+        young: 10,
+        mature: 5,
+        total: 30,
+      },
+      endCounts: {
+        young: 50,
+        mature: 20,
+        totalActive: 100,
+        newRemaining: 500,
+      },
+    }
+
+    acc.summariesByDay.set(dayIndex - 1, previousDaySummary)
 
     const youngCards = makeCardArray(CardStatus.young, 10)
-    accumulator.cardsByDay.set(dayIndex, youngCards)
-    expect(accumulator.cardsByDay.get(dayIndex)).toEqual(youngCards)
+    acc.cardsByDay.set(dayIndex, youngCards)
+    expect(acc.cardsByDay.get(dayIndex)).toEqual(youngCards)
 
-    daySummaryReducer(accumulator, null, dayIndex)
+    daySummaryReducer(acc, null, dayIndex)
 
-    expect(accumulator.summariesByDay.get(dayIndex)).toEqual(emptyDaySummary)
+    const expectedSkipDaySummary: DaySummary = {
+      reviews: emptyReviews,
+      endCounts: previousDaySummary.endCounts,
+    }
 
-    const nextDayCards = accumulator.cardsByDay.get(dayIndex + 1) ?? []
-    const nextDayIncludesSkippedCards = youngCards.reduce((acc, card) => {
-      return acc && nextDayCards.includes(card)
+    expect(acc.summariesByDay.get(dayIndex)).toEqual(expectedSkipDaySummary)
+
+    const nextDayCards = acc.cardsByDay.get(dayIndex + 1) ?? []
+    const nextDayIncludesSkippedCards = youngCards.reduce((accumulator, card) => {
+      return accumulator && nextDayCards.includes(card)
     }, true)
     expect(nextDayIncludesSkippedCards).toBeTruthy()
   })

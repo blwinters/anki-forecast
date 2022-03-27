@@ -13,6 +13,7 @@ import { getDayCards } from './getDayCards'
 import { makeNewCardArray } from './forecastHelpers'
 import { appendToCardsByDayAtIndex, scheduleDayCards } from './scheduleDayCards'
 import type { Card } from './models/Card'
+import { DayCards } from './DayCards'
 
 export type DaySummaryAccumulator = {
   summariesByDay: DaySummaryMap
@@ -43,10 +44,7 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
   })
 
   if (skippedDayIndices.includes(dayIndex)) {
-    acc.summariesByDay.set(dayIndex, emptyDaySummary)
-    const { young, mature } = dayCards.getCardArrays()
-    const skippedReviews = young.concat(mature)
-    appendToCardsByDayAtIndex(acc.cardsByDay, dayIndex + 1, skippedReviews)
+    handleSkippedDays({ acc, dayIndex, dayCards })
     return acc
   }
 
@@ -73,6 +71,24 @@ export const getPreviousEndCounts = (
   dayIndex: number
 ): DaySummaryEndCounts => {
   return summariesByDay.get(dayIndex - 1)?.endCounts ?? emptyEndCounts
+}
+
+interface SkipDayProps {
+  acc: DaySummaryAccumulator
+  dayIndex: number
+  dayCards: DayCards
+}
+
+const handleSkippedDays = ({ acc, dayIndex, dayCards }: SkipDayProps) => {
+  const daySummaryObject: DaySummary = {
+    reviews: emptyReviews,
+    endCounts: getPreviousEndCounts(acc.summariesByDay, dayIndex),
+  }
+  acc.summariesByDay.set(dayIndex, daySummaryObject)
+
+  const { young, mature } = dayCards.getCardArrays()
+  const skippedReviews = young.concat(mature)
+  appendToCardsByDayAtIndex(acc.cardsByDay, dayIndex + 1, skippedReviews)
 }
 
 interface EndCountProps {
@@ -116,7 +132,7 @@ export const daySummaryReducerDefaultValue = ({
   }
 }
 
-const emptyReviews: DaySummaryReviews = {
+export const emptyReviews: DaySummaryReviews = {
   new: 0,
   young: 0,
   mature: 0,
