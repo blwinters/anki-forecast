@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import Chart from './ui/Chart'
-import { DaySummary } from './logic/generateForecast/types'
-import { ForecastProps, generateForecast } from './logic/generateForecast'
+import { DaySummary, ForecastProps, generateForecast } from './logic'
 import ControlPanel from './ui/ControlPanel'
 import { Container, Grid } from '@mui/material'
 

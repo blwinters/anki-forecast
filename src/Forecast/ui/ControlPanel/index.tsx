@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useEffect, useReducer } from 'react'
 import { Stack } from '@mui/material'
-import { ForecastProps } from '../../logic/generateForecast'
 import {
   defaultAnkiConfig,
   defaultStartingSummary,
   defaultWeekConfig,
-} from '../../logic/generateForecast/forecastHelpers'
+  ForecastProps,
+} from '../../logic'
 import NumberInput, { NumberInputProps } from './NumberInput'
 import WeekConfigPanel, { WeekConfigType } from './WeekConfigPanel'
 import { weekConfigReducer } from './WeekConfigReducer'

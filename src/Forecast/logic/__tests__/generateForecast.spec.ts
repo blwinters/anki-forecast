@@ -1,6 +1,6 @@
 import type { WeekConfig, DayConfig } from '../types'
 import { defaultAnkiConfig, defaultWeekConfig, defaultStartingSummary } from '../forecastHelpers'
-import { generateForecast } from '..'
+import { generateForecast } from '../generateForecast'
 
 describe('generateForecast', () => {
   it('returns array matching forecastLength', () => {

@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-import { DaySummary } from '../../logic/generateForecast/types'
+import { DaySummary } from '../../logic'
 
 export interface ChartProps {
   data: DaySummary[]

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Stack } from '@mui/material'
-import { AnkiConfig } from '../../logic/generateForecast/types'
+import { AnkiConfig } from '../../logic'
 import { AnkiConfigAction, AnkiConfigActionType } from './AnkiConfigReducer'
 import NumberInput from './NumberInput'
 import { layout } from '../styles'

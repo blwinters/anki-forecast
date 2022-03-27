@@ -1,5 +1,4 @@
-import { makeWeekConfigByRepeating } from '../../logic/generateForecast/forecastHelpers'
-import { DayOfWeekIndex, WeekConfig } from '../../logic/generateForecast/types'
+import { makeWeekConfigByRepeating, DayOfWeekIndex, WeekConfig } from '../../logic'
 import { WeekConfigType } from './WeekConfigPanel'
 
 interface BaseAction {

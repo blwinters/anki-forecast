@@ -1,5 +1,4 @@
-import { DaySummary, DayConfig, WeekConfig, AnkiConfig } from './types'
-import { CardStatus } from './types'
+import { DaySummary, DayConfig, WeekConfig, AnkiConfig, CardStatus } from './types'
 import { Card } from './models/Card'
 
 export const makeWeekConfigByRepeating = (dayConfig: DayConfig): WeekConfig => {

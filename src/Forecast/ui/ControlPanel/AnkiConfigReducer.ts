@@ -1,4 +1,4 @@
-import { AnkiConfig } from '../../logic/generateForecast/types'
+import { AnkiConfig } from '../../logic'
 
 interface BaseAction {
   type: string
