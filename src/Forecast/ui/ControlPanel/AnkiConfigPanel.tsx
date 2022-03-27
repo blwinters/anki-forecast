@@ -1,4 +1,3 @@
-import React from 'react'
 import { Stack } from '@mui/material'
 import { AnkiConfig } from '../../logic'
 import { AnkiConfigAction, AnkiConfigActionType } from './AnkiConfigReducer'

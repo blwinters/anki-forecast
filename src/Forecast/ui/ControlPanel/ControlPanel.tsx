@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useReducer } from 'react'
+import { useState, useMemo, useEffect, useReducer } from 'react'
 import { Stack } from '@mui/material'
 import {
   defaultAnkiConfig,

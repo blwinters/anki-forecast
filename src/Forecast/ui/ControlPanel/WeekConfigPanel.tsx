@@ -1,5 +1,4 @@
 import { Box, Grid, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
-import React from 'react'
 import { DayConfig, DayOfWeekIndex } from '../../logic'
 import { layout } from '../styles'
 import NumberInput, { NumberInputProps } from './NumberInput'

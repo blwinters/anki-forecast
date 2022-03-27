@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { DaySummary, ForecastProps, generateForecast } from './logic'
 import { ControlPanel, Chart } from './ui'
 import { Container, Grid } from '@mui/material'

@@ -1,4 +1,4 @@
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import Forecast from './Forecast'
@@ -11,10 +11,10 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StrictMode>
     <CssBaseline />
     <Forecast />
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById('root')
 )
 
