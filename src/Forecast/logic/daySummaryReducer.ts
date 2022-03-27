@@ -51,7 +51,7 @@ export const daySummaryReducer: DaySummaryReducer = (acc, _, dayIndex) => {
   const previousEndCounts = getPreviousEndCounts(summariesByDay, dayIndex)
 
   const daySummary: DaySummary = {
-    reviews: dayCards.getDaySummaryReviews(dayConfig.maxReviews),
+    reviews: dayCards.getDaySummaryReviews(),
     endCounts: calculateEndCounts({ previousEndCounts, cardStatusDiff }),
   }
 
@@ -103,7 +103,6 @@ const emptyReviews: DaySummaryReviews = {
   young: 0,
   mature: 0,
   total: 0,
-  max: 0,
 }
 
 export const emptyEndCounts: DaySummaryEndCounts = {

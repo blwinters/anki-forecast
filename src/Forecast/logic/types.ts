@@ -24,7 +24,6 @@ export interface DaySummaryReviews {
   young: number
   mature: number
   total: number
-  max: number
 }
 
 export interface DaySummaryEndCounts {

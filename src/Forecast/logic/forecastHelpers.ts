@@ -33,7 +33,6 @@ export const defaultStartingSummary = ({ deckSize }: { deckSize: number }): DayS
     new: 0,
     young: 0,
     mature: 0,
-    max: 0,
     total: 0,
   },
   endCounts: {

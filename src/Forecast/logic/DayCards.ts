@@ -49,14 +49,13 @@ export class DayCards {
     }
   }
 
-  getDaySummaryReviews(weekdayMax: number): DaySummaryReviews {
+  getDaySummaryReviews(): DaySummaryReviews {
     const { newCards, young, mature, total } = this.toCounts()
     return {
       new: newCards,
       young,
       mature,
       total,
-      max: weekdayMax,
     }
   }
 }
