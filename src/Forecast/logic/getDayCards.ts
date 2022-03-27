@@ -27,7 +27,7 @@ export const getDayCards = (cardCountProps: ReviewCountProps): DayCards => {
   return new DayCards(revisedCardArrays)
 }
 
-const startingReviewsForStatus = (
+export const startingReviewsForStatus = (
   status: CardStatus,
   { dayIndex, dayConfig, cardsByDay, newCardsRemaining }: ReviewCountProps
 ): Card[] => {
@@ -45,7 +45,7 @@ const startingReviewsForStatus = (
         return card.latestInterval >= matureCardThreshold
       })
     default:
-      return []
+      throw new Error(`Unknown CardStatus`)
   }
 }
 

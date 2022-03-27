@@ -1,4 +1,4 @@
-import { ReviewCountProps, getDayCards } from '../getDayCards'
+import { ReviewCountProps, getDayCards, startingReviewsForStatus } from '../getDayCards'
 import { DayCardCounts } from '../DayCards'
 import { CardStatus, DayCardsMap, DayConfig } from '../types'
 import { makeCardArray, makeNewCardArray } from '../forecastHelpers'
@@ -89,6 +89,14 @@ describe('getReviewCounts', () => {
         }
 
         expect(actual).toEqual(expected)
+      })
+    })
+
+    describe('startingReviewsForStatus', () => {
+      it('throws error for unknown status value', () => {
+        expect(() => {
+          startingReviewsForStatus(-1, defaultCountProps)
+        }).toThrow()
       })
     })
   })

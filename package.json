@@ -70,9 +70,10 @@
   "jest": {
     "coverageThreshold": {
       "./src/Forecast/logic": {
-        "branches": 80,
-        "statements": 80,
-        "functions": 80
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
       }
     }
   }

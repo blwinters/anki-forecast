@@ -14,7 +14,7 @@ export interface DayCardArrays {
   mature: Card[]
 }
 
-interface CardIdArrays {
+export interface CardIdArrays {
   newIds: string[]
   youngIds: string[]
   matureIds: string[]
