@@ -4,6 +4,7 @@ import './index.css'
 import Forecast from './Forecast'
 import reportWebVitals from './reportWebVitals'
 import CssBaseline from '@mui/material/CssBaseline'
+import { Helmet } from 'react-helmet'
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -12,6 +13,13 @@ import '@fontsource/roboto/700.css'
 
 ReactDOM.render(
   <StrictMode>
+    <Helmet>
+      <title>Anki Forecast</title>
+      <meta
+        name="description"
+        content="Generate a forecast of your Anki flashcard reviews for the months ahead, using a range of settings and personal factors."
+      />
+    </Helmet>
     <CssBaseline />
     <Forecast />
   </StrictMode>,
