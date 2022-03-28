@@ -5,11 +5,15 @@ import Forecast from './Forecast'
 import reportWebVitals from './reportWebVitals'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Helmet } from 'react-helmet'
+import ReactGA from 'react-ga4'
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+
+ReactGA.initialize(process.env.REACT_APP_GA_ID as string, { legacyDimensionMetric: false })
+ReactGA.send('pageview')
 
 ReactDOM.render(
   <StrictMode>
