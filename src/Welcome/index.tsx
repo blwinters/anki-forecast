@@ -9,7 +9,9 @@ export const Welcome = ({ onProceed }: Props) => (
     <Paper sx={{ padding: 2 }}>
       <Stack spacing={2}>
         <StackItem>
-          <Typography variant="h2">Welcome to Anki Forecast</Typography>
+          <Typography variant="h2" sx={{ textAlign: 'center' }}>
+            Welcome to Anki Forecast
+          </Typography>
         </StackItem>
         <StackItem>
           <Typography variant="body1" sx={{ maxWidth: 650, textAlign: 'center' }}>
