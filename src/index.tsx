@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import Forecast from './Forecast'
 import reportWebVitals from './reportWebVitals'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Helmet } from 'react-helmet'
@@ -11,6 +10,7 @@ import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+import App from './App'
 
 ReactGA.initialize(process.env.REACT_APP_GA_ID as string, { legacyDimensionMetric: false })
 ReactGA.send('pageview')
@@ -25,7 +25,7 @@ ReactDOM.render(
       />
     </Helmet>
     <CssBaseline />
-    <Forecast />
+    <App />
   </StrictMode>,
   document.getElementById('root')
 )
