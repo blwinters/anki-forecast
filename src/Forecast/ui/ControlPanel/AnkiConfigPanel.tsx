@@ -62,7 +62,7 @@ const mapPropsToNumberInput = ({
     dispatch({ type: actionType, payload: { value: newValue } })
   }
 
-  return <NumberInput label={label} value={value} submitValue={onSubmitValue} />
+  return <NumberInput key={label} label={label} value={value} submitValue={onSubmitValue} />
 }
 
 export default AnkiConfigPanel
