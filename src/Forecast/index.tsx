@@ -29,7 +29,11 @@ const Forecast = () => {
         container
         spacing={3}
         sx={{
-          p: {
+          paddingX: {
+            xs: 0,
+            sm: 4,
+          },
+          paddingY: {
             xs: 1,
             sm: 4,
           },
@@ -37,12 +41,11 @@ const Forecast = () => {
             xs: 'column',
             sm: 'row',
           },
-          alignItems: 'center',
         }}>
         <Grid item xs={12} sm={10}>
           <Chart data={data} />
         </Grid>
-        <Grid item xs={9} sm={2}>
+        <Grid item xs={8} sm={2}>
           <Container>
             <ControlPanel onUpdateChart={onUpdateChart} />
           </Container>
