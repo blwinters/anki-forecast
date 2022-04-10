@@ -31,7 +31,7 @@ const WeekConfigPanel = ({ state, dispatch }: Props) => {
   }
 
   return (
-    <Paper elevation={1} sx={{ padding: 2 }}>
+    <Paper elevation={1} sx={{ padding: 3 }}>
       <Stack spacing={2}>
         <Box>Cards Per Day</Box>
         <WeekConfigTypeToggle value={state.selectedType} onPress={onPressConfigType} />

@@ -38,16 +38,16 @@ export const BasicConfigPanel = ({ state, dispatch }: Props) => {
 
   const numberInputs: NumberInputProps[] = [
     {
-      label: '# of days',
-      value: state.forecastLength,
-      submitValue: setForecastLength,
-      maxValue: 730,
-    },
-    {
       label: '# of cards',
       value: state.deckSize,
       submitValue: setDeckSize,
       maxValue: 100_000,
+    },
+    {
+      label: '# of days',
+      value: state.forecastLength,
+      submitValue: setForecastLength,
+      maxValue: 730,
     },
     {
       label: 'Skip days per month',
@@ -58,7 +58,7 @@ export const BasicConfigPanel = ({ state, dispatch }: Props) => {
   ]
 
   return (
-    <Paper elevation={1} sx={{ padding: 2 }}>
+    <Paper elevation={1} sx={{ padding: 3 }}>
       <Stack spacing={2}>
         {numberInputs.map((props, index) => (
           <NumberInput key={index} {...props} />

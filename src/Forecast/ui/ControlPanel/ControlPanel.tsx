@@ -53,7 +53,7 @@ const ControlPanel = ({ onUpdateChart: onUpdate }: ControlPanelProps): JSX.Eleme
   }, [onUpdate, startingSummary, forecastLength, skipsPerMonth, ankiConfigState, weekConfig])
 
   return (
-    <Stack direction="column" spacing={layout.stackSpacing}>
+    <Stack minWidth={210} direction="column" spacing={layout.stackSpacing}>
       <BasicConfigPanel state={basicConfigState} dispatch={dispatchBasicConfigAction} />
       <WeekConfigPanel state={weekConfigState} dispatch={dispatchWeekConfigAction} />
       <AnkiConfigPanel state={ankiConfigState} dispatch={dispatchAnkiConfigAction} />

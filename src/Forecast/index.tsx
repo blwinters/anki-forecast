@@ -30,7 +30,9 @@ const Forecast = () => {
           <Chart data={data} />
         </Grid>
         <Grid item xs={2}>
-          <ControlPanel onUpdateChart={onUpdateChart} />
+          <Container>
+            <ControlPanel onUpdateChart={onUpdateChart} />
+          </Container>
         </Grid>
       </Grid>
     </Container>
