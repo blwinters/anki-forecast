@@ -25,7 +25,20 @@ const Forecast = () => {
 
   return (
     <Container maxWidth="xl">
-      <Grid container spacing={3} p={4}>
+      <Grid
+        container
+        spacing={3}
+        sx={{
+          p: {
+            xs: 1,
+            sm: 4,
+          },
+          flexDirection: {
+            xs: 'column',
+            sm: 'row',
+          },
+          alignItems: 'center',
+        }}>
         <Grid item xs={12} sm={10}>
           <Chart data={data} />
         </Grid>
