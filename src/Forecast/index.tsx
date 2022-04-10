@@ -25,11 +25,11 @@ const Forecast = () => {
 
   return (
     <Container maxWidth="xl">
-      <Grid container spacing={2} p={4}>
-        <Grid item xs={10}>
+      <Grid container spacing={3} p={4}>
+        <Grid item xs={12} sm={10}>
           <Chart data={data} />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={9} sm={2}>
           <Container>
             <ControlPanel onUpdateChart={onUpdateChart} />
           </Container>
